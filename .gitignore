@@ -1,0 +1,17 @@
+# Audio-Renders und Exporte gehören nicht ins Git (zu groß, GitHub-Limit 100 MB pro Datei)
+*.wav
+*.aif
+*.aiff
+*.flac
+*.mp3
+*.zip
+renders/
+exports/
+
+# Ableton-Projektordner: Samples und Backups bleiben lokal
+**/Backup/
+**/Samples/Recorded/
+**/Samples/Processed/
+
+.DS_Store
+Thumbs.db
