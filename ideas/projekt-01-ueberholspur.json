@@ -1,0 +1,1667 @@
+{
+ "v": 2,
+ "id": "mwihqiz1glv35",
+ "name": "Projekt 01 – Überholspur",
+ "notes": "Melodischer Bounce mit Hardtechno-Kante.\nAkkorde: Fm – C# – D# – Cm (je ein Takt)\nKick ist auf F gestimmt. Patterns A–D = Thema 1, E–H = Thema 2.",
+ "bpm": 158,
+ "swing": 0,
+ "root": 5,
+ "scale": "minor",
+ "patterns": {
+  "A": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "hat": [
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    null,
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    },
+    null,
+    null,
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    },
+    null,
+    null,
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    },
+    null,
+    null,
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null
+   ],
+   "pluck": [
+    null,
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 7
+    },
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 9
+    }
+   ]
+  },
+  "B": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "hat": [
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    null,
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    },
+    null,
+    null,
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    },
+    null,
+    null,
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    },
+    null,
+    null,
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null
+   ],
+   "pluck": [
+    null,
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 7
+    },
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 9
+    }
+   ]
+  },
+  "C": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "hat": [
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    null,
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null
+   ],
+   "pluck": [
+    null,
+    null,
+    {
+     "d": 10
+    },
+    {
+     "d": 8
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    {
+     "d": 8
+    },
+    null,
+    null,
+    {
+     "d": 10
+    },
+    {
+     "d": 8
+    },
+    null,
+    null,
+    {
+     "d": 13
+    },
+    {
+     "d": 8
+    }
+   ]
+  },
+  "D": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    1
+   ],
+   "hat": [
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    1,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    null,
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    },
+    null,
+    null,
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    },
+    null,
+    null,
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    },
+    null,
+    null,
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null
+   ],
+   "pluck": [
+    null,
+    null,
+    {
+     "d": 8
+    },
+    {
+     "d": 13
+    },
+    null,
+    null,
+    {
+     "d": 8
+    },
+    {
+     "d": 11
+    },
+    null,
+    null,
+    {
+     "d": 8
+    },
+    {
+     "d": 6
+    },
+    null,
+    null,
+    {
+     "d": 8
+    },
+    {
+     "d": 11
+    }
+   ]
+  },
+  "E": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "hat": [
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    {
+     "d": 14
+    },
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    },
+    null,
+    {
+     "d": 14
+    },
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    },
+    null,
+    {
+     "d": 14
+    },
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    },
+    null,
+    {
+     "d": 14
+    },
+    {
+     "d": 7
+    },
+    {
+     "d": 14
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null,
+    null,
+    {
+     "d": 0
+    },
+    null
+   ],
+   "pluck": [
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 11
+    },
+    null,
+    null,
+    {
+     "d": 9
+    },
+    {
+     "d": 7
+    },
+    {
+     "d": 7
+    },
+    null,
+    null,
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 9
+    }
+   ]
+  },
+  "F": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "hat": [
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    },
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    },
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    },
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 5
+    },
+    {
+     "d": 12
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null,
+    null,
+    {
+     "d": 5
+    },
+    null
+   ],
+   "pluck": [
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 12
+    },
+    null,
+    null,
+    {
+     "d": 9
+    },
+    {
+     "d": 7
+    },
+    {
+     "d": 7
+    },
+    null,
+    null,
+    {
+     "d": 9
+    },
+    null,
+    null,
+    {
+     "d": 12
+    },
+    {
+     "d": 9
+    }
+   ]
+  },
+  "G": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "hat": [
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    {
+     "d": 13
+    },
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    },
+    null,
+    {
+     "d": 13
+    },
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    },
+    null,
+    {
+     "d": 13
+    },
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    },
+    null,
+    {
+     "d": 13
+    },
+    {
+     "d": 6
+    },
+    {
+     "d": 13
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null,
+    null,
+    {
+     "d": 6
+    },
+    null
+   ],
+   "pluck": [
+    {
+     "d": 8
+    },
+    null,
+    null,
+    {
+     "d": 10
+    },
+    null,
+    null,
+    {
+     "d": 8
+    },
+    {
+     "d": 6
+    },
+    {
+     "d": 6
+    },
+    null,
+    null,
+    {
+     "d": 8
+    },
+    null,
+    null,
+    {
+     "d": 10
+    },
+    {
+     "d": 8
+    }
+   ]
+  },
+  "H": {
+   "kick": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1
+   ],
+   "clap": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    1
+   ],
+   "hat": [
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    2,
+    1
+   ],
+   "ohat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "bass": [
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    },
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    },
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    },
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 4
+    },
+    {
+     "d": 11
+    }
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null,
+    null,
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null,
+    null,
+    {
+     "d": 4
+    },
+    null
+   ],
+   "pluck": [
+    {
+     "d": 8
+    },
+    null,
+    null,
+    {
+     "d": 11
+    },
+    null,
+    null,
+    {
+     "d": 8
+    },
+    {
+     "d": 6
+    },
+    {
+     "d": 6
+    },
+    null,
+    null,
+    {
+     "d": 8
+    },
+    null,
+    null,
+    {
+     "d": 11
+    },
+    {
+     "d": 8
+    }
+   ]
+  }
+ },
+ "song": [
+  {
+   "name": "Intro",
+   "seq": "ABCD",
+   "bars": 8,
+   "off": {
+    "clap": true,
+    "ohat": true,
+    "bass": true,
+    "lead": true,
+    "pluck": true
+   },
+   "crash": false,
+   "riser": true,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  },
+  {
+   "name": "Aufbau",
+   "seq": "ABCD",
+   "bars": 8,
+   "off": {
+    "lead": true
+   },
+   "crash": true,
+   "riser": true,
+   "roll": true,
+   "sweep": true,
+   "gap": false
+  },
+  {
+   "name": "Drop 1",
+   "seq": "ABCD",
+   "bars": 16,
+   "off": {},
+   "crash": true,
+   "riser": false,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  },
+  {
+   "name": "Drive",
+   "seq": "ABCD",
+   "bars": 8,
+   "off": {
+    "pluck": true
+   },
+   "crash": true,
+   "riser": false,
+   "roll": true,
+   "sweep": false,
+   "gap": true
+  },
+  {
+   "name": "Drop 1 zurück",
+   "seq": "ABCD",
+   "bars": 16,
+   "off": {},
+   "crash": true,
+   "riser": true,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  },
+  {
+   "name": "Kurzer Break",
+   "seq": "ABCD",
+   "bars": 8,
+   "off": {
+    "kick": true,
+    "hat": true,
+    "bass": true
+   },
+   "crash": true,
+   "riser": true,
+   "roll": true,
+   "sweep": true,
+   "gap": false
+  },
+  {
+   "name": "Drop 2",
+   "seq": "EFGH",
+   "bars": 16,
+   "off": {},
+   "crash": true,
+   "riser": false,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  },
+  {
+   "name": "Drop 2 hoch",
+   "seq": "EFGH",
+   "bars": 16,
+   "off": {},
+   "crash": true,
+   "riser": false,
+   "roll": true,
+   "sweep": false,
+   "gap": true
+  },
+  {
+   "name": "Drive 2",
+   "seq": "EFGH",
+   "bars": 8,
+   "off": {
+    "pluck": true
+   },
+   "crash": true,
+   "riser": true,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  },
+  {
+   "name": "Finale",
+   "seq": "ABCD",
+   "bars": 16,
+   "off": {},
+   "crash": true,
+   "riser": false,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  },
+  {
+   "name": "Outro",
+   "seq": "ABCD",
+   "bars": 8,
+   "off": {
+    "clap": true,
+    "lead": true,
+    "pluck": true
+   },
+   "crash": true,
+   "riser": false,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  },
+  {
+   "name": "Ausklang",
+   "seq": "ABCD",
+   "bars": 8,
+   "off": {
+    "clap": true,
+    "ohat": true,
+    "bass": true,
+    "lead": true,
+    "pluck": true
+   },
+   "crash": false,
+   "riser": false,
+   "roll": false,
+   "sweep": false,
+   "gap": false
+  }
+ ],
+ "sound": {
+  "kick": {
+   "start": 480,
+   "end": 44,
+   "pdecay": 0.035,
+   "decay": 0.34,
+   "click": 0.45,
+   "drive": 0.68,
+   "tone": 7500
+  },
+  "rumble": {
+   "send": 0.2,
+   "size": 1,
+   "drive": 0.6,
+   "cutoff": 150,
+   "duck": 0.95
+  },
+  "clap": {
+   "decay": 0.22,
+   "tone": 1300
+  },
+  "hat": {
+   "decay": 0.045
+  },
+  "ohat": {
+   "decay": 0.22
+  },
+  "bass": {
+   "wave": "sawtooth",
+   "octave": 1,
+   "sub": 0.25,
+   "cutoff": 520,
+   "res": 0.4,
+   "env": 0.6,
+   "decay": 0.14,
+   "drive": 0.6
+  },
+  "lead": {
+   "octave": 3,
+   "chord": true,
+   "detune": 24,
+   "cutoff": 5200,
+   "attack": 0.004,
+   "gate": 0.7,
+   "release": 0.14
+  },
+  "pluck": {
+   "octave": 4,
+   "detune": 12,
+   "cutoff": 1600,
+   "env": 0.65,
+   "decay": 0.16,
+   "gate": 0.7,
+   "release": 0.1
+  },
+  "master": {
+   "drive": 0.3,
+   "vol": 0.85
+  }
+ },
+ "mix": {
+  "kick": {
+   "vol": 0.9,
+   "verb": 0,
+   "mute": false,
+   "solo": false
+  },
+  "rumble": {
+   "vol": 0.6,
+   "verb": 0,
+   "mute": false,
+   "solo": false
+  },
+  "clap": {
+   "vol": 0.78,
+   "verb": 0.25,
+   "mute": false,
+   "solo": false
+  },
+  "hat": {
+   "vol": 0.5,
+   "verb": 0.04,
+   "mute": false,
+   "solo": false
+  },
+  "ohat": {
+   "vol": 0.6,
+   "verb": 0.1,
+   "mute": false,
+   "solo": false
+  },
+  "bass": {
+   "vol": 0.7,
+   "verb": 0,
+   "mute": false,
+   "solo": false
+  },
+  "lead": {
+   "vol": 0.52,
+   "verb": 0.3,
+   "mute": false,
+   "solo": false,
+   "delay": 0.12
+  },
+  "pluck": {
+   "vol": 0.7,
+   "verb": 0.25,
+   "mute": false,
+   "solo": false,
+   "delay": 0.3
+  },
+  "fx": {
+   "vol": 0.6,
+   "verb": 0.35,
+   "mute": false,
+   "solo": false
+  }
+ },
+ "updated": 1794786828483
+}

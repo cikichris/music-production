@@ -19,18 +19,26 @@ Läuft komplett im Browser, ohne Installation und ohne Samples. Alle Sounds werd
 | Bereich | Was es kann |
 | --- | --- |
 | Step-Sequencer | Kick, Clap, Hi-Hat, Open Hat (Klick: an, Akzent, aus), Bass und Lead mit Notennamen |
-| Patterns | A–D pro Idee, kopieren, leeren, „Kette“ spielt alle gefüllten Patterns nacheinander |
+| Patterns | A–H pro Idee, kopieren, leeren |
+| Ideen-Generator | „Bounce-Track würfeln“ erzeugt jedes Mal eine neue melodische Bounce-Idee mit Akkordfolge, Bass, Stabs, Melodie und fertigem Arrangement |
+| Song | Abschnitte mit Pattern-Folge, Länge, Spuren an/aus und Übergängen (Crash, Riser, Clap-Roll, Kick-Pause, Filterfahrt) |
 | Kick-Designer | Pitch-Start, Grundton, Pitch-Sweep, Länge, Klick, Verzerrung, Höhen |
 | Rumble | Hall auf der Kick, verzerrt und tiefpassgefiltert, mit Ducking |
-| Bass / Lead | Piano-Roll nur mit Tönen der Tonart; Lead mit Supersaw, Akkord-Modus, Hall und Delay |
-| Export | ZIP mit Mix, Stems, MIDI (Drum-Rack-Belegung C1/D#1/F#1/A#1), `idee.json` und Anleitung |
+| Bass / Lead / Pluck | Piano-Roll nur mit Tönen der Tonart; Lead mit Supersaw und Akkord-Modus, Pluck für Melodien |
+| Export | Ganzer Song oder Pattern-Loop als ZIP mit Mix, Stems, MIDI (Drum-Rack-Belegung C1/D#1/F#1/A#1), `idee.json` und Anleitung |
 
 Leertaste startet und stoppt die Wiedergabe.
 
 ### Auf dem iPhone
 
-Unter 760 px Breite schaltet der Skizzenblock in eine Handy-Ansicht: feste Leiste unten mit Play in der Mitte und den Bereichen Beat, Klang, Ideen und Export. Oben bleiben Patterns und Tempo stehen; ein Tipp auf „BPM“ klappt Swing, Tonart und Pattern-Werkzeuge aus. Ein Tipp auf einen Spurnamen öffnet dessen Klang-Einstellungen.
+Unter 760 px Breite schaltet der Skizzenblock in eine Handy-Ansicht: feste Leiste unten mit Play in der Mitte und den Bereichen Beat, Klang, Song und Ideen. Oben bleiben Patterns und Tempo stehen; ein Tipp auf „BPM“ klappt Swing, Tonart und Pattern-Werkzeuge aus. Ein Tipp auf einen Spurnamen öffnet dessen Klang-Einstellungen.
 
 ## Was nicht ins Repo gehört
 
 Audio-Dateien und Exporte sind per `.gitignore` ausgeschlossen. Ins Repo kommen Code, Notizen und Ideen als kleine JSON-Dateien (z. B. unter `ideas/`).
+
+## Projekte
+
+| Projekt | Stil | Tempo / Tonart | Datei |
+| --- | --- | --- | --- |
+| Projekt 01 – Überholspur | Melodischer Bounce mit Hardtechno-Kante, 136 Takte, ca. 3:27 | 158 BPM, F-Moll | `ideas/projekt-01-ueberholspur.json` |
