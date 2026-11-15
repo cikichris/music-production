@@ -27,6 +27,10 @@ Läuft komplett im Browser, ohne Installation und ohne Samples. Alle Sounds werd
 
 Leertaste startet und stoppt die Wiedergabe.
 
+### Auf dem iPhone
+
+Unter 760 px Breite schaltet der Skizzenblock in eine Handy-Ansicht: feste Leiste unten mit Play in der Mitte und den Bereichen Beat, Klang, Ideen und Export. Oben bleiben Patterns und Tempo stehen; ein Tipp auf „BPM“ klappt Swing, Tonart und Pattern-Werkzeuge aus. Ein Tipp auf einen Spurnamen öffnet dessen Klang-Einstellungen.
+
 ## Was nicht ins Repo gehört
 
 Audio-Dateien und Exporte sind per `.gitignore` ausgeschlossen. Ins Repo kommen Code, Notizen und Ideen als kleine JSON-Dateien (z. B. unter `ideas/`).

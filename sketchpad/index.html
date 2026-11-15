@@ -26,10 +26,14 @@
   --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   color-scheme:dark;
 }
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{background:var(--bg);color:var(--fg)}
 body{font-family:var(--f-body);font-size:14px;line-height:1.4}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 *{box-sizing:border-box}
 button,input,select,textarea{font:inherit;color:inherit}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+label,.h,.legend,.brand{-webkit-user-select:none;user-select:none}
 :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 
 .app{max-width:1440px;margin:0 auto;padding-block:16px 48px;
@@ -42,7 +46,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .brand b{color:var(--uv);font-weight:800}
 .idea-name{flex:1 1 220px;min-width:0;background:transparent;border:1px solid transparent;border-radius:6px;
   padding:6px 8px;font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:.01em}
-.idea-name:hover{border-color:var(--line)}
+@media (hover:hover){.idea-name:hover{border-color:var(--line)}}
 .idea-name:focus{border-color:var(--uv);outline:none;background:var(--panel)}
 .pill{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
 .pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--muted)}
@@ -51,14 +55,19 @@ button,input,select,textarea{font:inherit;color:inherit}
 .pill[data-s="error"]::before{background:var(--danger)}
 
 /* Transport */
-.transport{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.transport{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:9;box-shadow:0 10px 24px -12px var(--bg)}
+.t-more{display:contents}
+.t-more-btn{display:none}
+.stepb{width:34px;padding:0;font-size:17px;line-height:1}
 .play{font-family:var(--f-display);font-weight:800;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
   background:var(--uv);color:var(--uv-ink);border:0;border-radius:8px;padding:12px 18px;min-width:108px;cursor:pointer}
 .play[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink)}
 .field{display:flex;flex-direction:column;gap:3px}
 .field>span{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
 .field input[type=number],.field select,.select{background:var(--raise);border:1px solid var(--line);border-radius:6px;padding:6px 8px;height:34px}
-.field input[type=number]{width:76px;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.field input[type=number]{width:62px;text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield}
+.field input[type=number]::-webkit-inner-spin-button,.field input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .inline{display:flex;gap:6px;align-items:center}
 .swing{width:110px}
 .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
@@ -68,7 +77,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .pat.empty:not(.sel){color:var(--muted)}
 .pat.playing::after{content:"";position:absolute;left:50%;bottom:-6px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--amber)}
 .btn{background:var(--raise);border:1px solid var(--line);border-radius:6px;padding:0 12px;height:34px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
-.btn:hover{background:var(--raise-2)}
+@media (hover:hover){.btn:hover{background:var(--raise-2)}}
 .btn.on{background:var(--uv);border-color:var(--uv);color:var(--uv-ink)}
 .btn.warn{border-color:var(--danger);color:var(--danger)}
 .btn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
@@ -85,7 +94,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .newrow .btn{flex:1 1 auto;padding:0 8px;font-size:12px}
 .ilist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;max-height:340px;overflow:auto}
 .ilist button{width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:6px;padding:7px 9px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
-.ilist button:hover{background:var(--raise)}
+@media (hover:hover){.ilist button:hover{background:var(--raise)}}
 .ilist button.cur{background:var(--raise);border-color:var(--uv-soft)}
 .ilist .n{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ilist .m{font-size:11.5px;color:var(--muted);font-family:var(--f-mono)}
@@ -119,6 +128,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .step.ghost{background:var(--uv-soft);border-color:var(--uv-soft)}
 .step:disabled{cursor:default}
 .step.ph{box-shadow:0 0 0 2px var(--fg) inset}
+.step:active:not(:disabled),.rc:active{transform:scale(.93)}
 .step span{font-weight:600;font-size:10px;letter-spacing:-.02em}
 .row.bus .step{height:16px}
 
@@ -139,6 +149,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .group{display:flex;flex-direction:column;gap:10px}
 .group+.group{border-top:1px solid var(--line);padding-top:14px}
 
+.select,.param select{-webkit-appearance:none;appearance:none;padding-right:28px;background-repeat:no-repeat;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 15px) 50%,calc(100% - 10px) 50%;background-size:5px 5px,5px 5px}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;cursor:pointer;margin:0}
 input[type=range]::-webkit-slider-runnable-track{height:4px;background:var(--line);border-radius:2px}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-5px;border-radius:50%;background:var(--fg);border:3px solid var(--uv)}
@@ -165,69 +178,146 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);
   padding:9px 14px;border-radius:8px;font-weight:600;font-size:13px;max-width:calc(100% - 32px);z-index:20}
 
-.fab{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;
-  width:68px;height:68px;border-radius:50%;border:0;background:var(--uv);color:var(--uv-ink);cursor:pointer;
-  font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 6px 22px rgba(0,0,0,.55)}
-.fab[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink)}
-@media (min-width: 641px) and (pointer: fine){.fab{display:none}}
-@media (pointer: coarse){.kbd-hint{display:none}}
+/* Untere Leiste (nur Handy) */
+.nav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:15;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;
+  background:var(--panel);background:color-mix(in srgb,var(--panel) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.nav button{background:none;border:0;cursor:pointer;padding:0}
+.nitem{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;color:var(--muted);font-size:11px;font-weight:600}
+.nitem svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nitem[aria-current="page"]{color:var(--fg)}
+.nitem[aria-current="page"] svg{stroke:var(--uv)}
+.nav .nplay{justify-self:center;width:66px;height:66px;border-radius:50%;background:var(--uv);color:var(--uv-ink);margin-top:-24px;
+  box-shadow:0 0 0 5px var(--bg),0 8px 22px rgba(0,0,0,.5);display:grid;place-items:center}
+.nav .nplay[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink)}
+.nplay svg{width:26px;height:26px;fill:currentColor}
+.nplay .i-stop,.nplay[aria-pressed="true"] .i-play{display:none}
+.nplay[aria-pressed="true"] .i-stop{display:block}
 
+@media (pointer: coarse){
+  .kbd-hint{display:none}
+  input,select,textarea,.ideas textarea{font-size:16px}  /* iOS zoomt sonst beim Antippen */
+  input[type=range]{height:40px}
+  input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px}
+  input[type=range]::-webkit-slider-thumb{width:28px;height:28px;margin-top:-11px}
+  .head input[type=range]{height:36px}
+  .check{min-height:44px}
+  .check input{width:22px;height:22px}
+}
 @media (max-width: 960px){
   .layout{grid-template-columns:minmax(0,1fr)}
   .ideas{order:2}
   .meter{margin-left:0}
 }
-@media (max-width: 640px){
-  .row{grid-template-columns:minmax(0,1fr);gap:6px}
-  .head{grid-template-columns:auto auto auto 1fr;grid-template-rows:auto}
-  .head input[type=range]{grid-column:auto}
-  .steps{grid-template-columns:repeat(8,minmax(0,1fr))}
+@media (max-width: 760px){
+  .app{gap:10px;padding-block:10px 112px}
+  .brand{display:none}
+  .top{flex-wrap:nowrap;gap:8px}
+  .idea-name{flex:1 1 0;font-size:17px;padding:6px 4px}
+  .pill{padding:9px}
+  .pill .pt{display:none}
+  .transport{padding:8px;gap:8px;border-radius:12px}
+  .play.t-desk{display:none}
+  .t-pat{flex:1 1 auto;min-width:0}
+  .t-pat>span:first-child{display:none}
+  .pats{flex:1;gap:5px}
+  .pat{flex:1;width:auto;min-width:34px;height:44px;font-size:15px}
+  .btn{height:44px;padding:0 13px;font-size:14px}
+  .stepb{width:44px;padding:0;font-size:20px}
+  .t-more-btn{display:inline-flex;align-items:center;gap:5px;padding:0 10px}
+  .t-more{display:none}
+  .transport.open .t-more{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px 16px;width:100%;padding:10px 4px 4px;border-top:1px solid var(--line)}
+  .t-more .wide{grid-column:1 / -1}
+  .t-more .inline{flex-wrap:wrap}
+  .swing{width:100%}
+  .field select,.select,.field input[type=number]{height:44px}
+  .t-more .select{flex:1}
+  .meter canvas{flex:1;width:auto;min-width:0}
+  .layout{display:block}
+  .ideas,.gridbox,.panel{display:none}
+  .app[data-view="beat"] .gridbox{display:flex}
+  .app[data-view="sound"] .panel{display:block}
+  .app[data-view="ideas"] .ideas{display:flex}
+  .gridbox{padding:10px 12px 4px;gap:0}
+  .gridtools{padding-bottom:8px}
+  .row{grid-template-columns:minmax(0,1fr);gap:6px;padding-block:10px;border-top:1px solid var(--line)}
+  .head{display:flex;gap:8px}
+  .tname{flex:0 0 96px;font-size:15px;padding:8px 0}
+  .tname::after{content:" ›";color:var(--muted);font-weight:400}
+  .tname small{display:none}
+  .head input[type=range]{flex:1;order:1;min-width:0}
+  .ms{order:2;width:40px;height:38px;font-size:13px}
+  .steps{grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}
+  .step{height:46px;border-radius:7px}
+  .step span{font-size:12px}
   .step:nth-child(4n+1):not(:first-child){margin-left:0}
   .step:nth-child(8n+5){margin-left:6px}
-  .row.bus{display:none}
-  .idea-name{font-size:17px}
-  .app{padding-block:16px 104px}
-  .toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+  .row.bus .steps{display:none}
+  .tab{padding:14px 14px 12px;font-size:14px}
+  .tab[data-id="export"]{display:none}
+  .app[data-export] .tabs{display:none}
+  .pbody{padding:14px 12px}
+  .params{grid-template-columns:minmax(0,1fr);gap:10px}
+  .param .lab{font-size:13px}
+  .param select{height:44px}
+  .roll{grid-template-columns:46px repeat(16,34px);min-width:0;width:max-content;gap:3px}
+  .rlab{position:sticky;left:0;z-index:1;background:var(--panel);font-size:11.5px}
+  .rc{height:32px;border-radius:5px}
+  .exopts{flex-direction:column;align-items:stretch;gap:6px}
+  .exopts .btn{height:52px;font-size:15px;margin-top:6px}
+  .ilist{max-height:none}
+  .ilist button{padding:12px 10px}
+  .newrow .btn{font-size:14px;padding:0 10px}
+  .toast{bottom:calc(98px + env(safe-area-inset-bottom,0px))}
+  .nav{display:grid}
 }
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 
-<div class="app">
+<div class="app" data-view="beat">
   <header class="top">
     <div class="brand">Rave<b>·</b>Skizzenblock</div>
     <input id="ideaName" class="idea-name" aria-label="Name der Idee" maxlength="60">
-    <span id="saveState" class="pill" data-s="idle">Lokal</span>
+    <span id="saveState" class="pill" data-s="idle" role="status"><span class="pt" id="saveText">Lokal</span></span>
   </header>
 
-  <section class="transport" aria-label="Transport">
-    <button id="playBtn" class="play" aria-pressed="false">Play</button>
-    <label class="field"><span>Tempo</span>
-      <span class="inline"><input id="bpm" type="number" min="120" max="200" step="1"><span class="mono" style="color:var(--muted);font-size:12px">BPM</span></span>
-    </label>
-    <label class="field"><span>Swing <output id="swingOut" class="mono">0 %</output></span>
-      <input id="swing" class="swing" type="range" min="0" max="40" step="1">
-    </label>
-    <div class="field"><span>Tonart</span>
-      <span class="inline">
-        <select id="root" class="select" aria-label="Grundton"></select>
-        <select id="scale" class="select" aria-label="Tonleiter"></select>
-      </span>
-    </div>
-    <div class="field"><span>Pattern</span>
+  <section class="transport" id="transport" aria-label="Transport">
+    <button id="playBtn" class="play t-desk" aria-pressed="false">Play</button>
+    <div class="field t-pat"><span>Pattern</span>
       <span class="inline">
         <span class="pats" id="pats"></span>
         <button id="chainBtn" class="btn" aria-pressed="false" title="Spielt alle gefüllten Patterns nacheinander">Kette</button>
       </span>
     </div>
-    <div class="field"><span>Bearbeiten</span>
-      <span class="inline">
-        <select id="copyTo" class="select" aria-label="Pattern kopieren nach"></select>
-        <button id="clearBtn" class="btn">Leeren</button>
-      </span>
-    </div>
-    <div class="meter" aria-label="Pegel Master">
-      <canvas id="meter" width="280" height="28"></canvas>
-      <output id="meterOut" class="mono">–∞ dB</output>
+    <button id="moreBtn" class="btn t-more-btn" aria-expanded="false" aria-controls="tMore"><span id="bpmChip" class="mono">150</span><span>BPM</span><span aria-hidden="true">▾</span></button>
+    <div class="t-more" id="tMore">
+      <div class="field"><span>Tempo (BPM)</span>
+        <span class="inline">
+          <button class="btn stepb" id="bpmDown" aria-label="Tempo langsamer">−</button>
+          <input id="bpm" type="number" inputmode="numeric" min="100" max="200" step="1" aria-label="Tempo in BPM">
+          <button class="btn stepb" id="bpmUp" aria-label="Tempo schneller">+</button>
+        </span>
+      </div>
+      <label class="field"><span>Swing <output id="swingOut" class="mono">0 %</output></span>
+        <input id="swing" class="swing" type="range" min="0" max="40" step="1">
+      </label>
+      <div class="field wide"><span>Tonart</span>
+        <span class="inline">
+          <select id="root" class="select" aria-label="Grundton"></select>
+          <select id="scale" class="select" aria-label="Tonleiter"></select>
+        </span>
+      </div>
+      <div class="field wide"><span>Pattern bearbeiten</span>
+        <span class="inline">
+          <select id="copyTo" class="select" aria-label="Pattern kopieren nach"></select>
+          <button id="clearBtn" class="btn">Leeren</button>
+        </span>
+      </div>
+      <div class="meter wide" aria-label="Pegel Master">
+        <canvas id="meter" width="280" height="28"></canvas>
+        <output id="meterOut" class="mono">–∞ dB</output>
+      </div>
     </div>
   </section>
 
@@ -247,6 +337,7 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
       </div>
       <h2 class="h"><label for="notes">Notizen</label></h2>
       <textarea id="notes" placeholder="Vocal-Idee, Referenz-Track, was im Drop passieren soll …"></textarea>
+      <p class="empty-note" id="saveInfo"></p>
     </aside>
 
     <section class="rack">
@@ -255,7 +346,7 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
           <h2 class="h" id="gridTitle">Pattern A</h2>
           <div class="legend">
             <span><i style="background:var(--uv)"></i>an</span>
-            <span><i style="background:var(--amber)"></i>Akzent (2. Klick)</span>
+            <span><i style="background:var(--amber)"></i>Akzent: nochmal drücken</span>
             <span class="kbd-hint">Leertaste: Play/Stop</span>
           </div>
         </div>
@@ -270,7 +361,13 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
   </main>
 </div>
 <div id="toast" class="toast" role="status" hidden></div>
-<button id="fab" class="fab" aria-pressed="false" aria-label="Wiedergabe starten oder stoppen">Play</button>
+<nav class="nav" id="nav" aria-label="Bereiche">
+  <button class="nitem" data-nav="beat" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/></svg><span>Beat</span></button>
+  <button class="nitem" data-nav="sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v6M6 15v5M12 4v2M12 11v9M18 4v9M18 18v2"/><circle cx="6" cy="12.5" r="2.2"/><circle cx="12" cy="8.5" r="2.2"/><circle cx="18" cy="15.5" r="2.2"/></svg><span>Klang</span></button>
+  <button class="nplay" id="navPlay" aria-pressed="false" aria-label="Play"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg><svg class="i-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
+  <button class="nitem" data-nav="ideas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg><span>Ideen</span></button>
+  <button class="nitem" data-nav="export"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span>Export</span></button>
+</nav>
 
 <script>
 (() => {
@@ -458,14 +555,13 @@ const seqList = () => {
 };
 
 /* ---------- Audio-Engine (Echtzeit und Offline-Render) ---------- */
-function curveCache() { return new Map(); }
-const CURVES = curveCache();
-function driveCurve(amt) {
-  const key = Math.round(amt * 100);
-  if (CURVES.has(key)) return CURVES.get(key);
-  const n = 2048, c = new Float32Array(n), k = 1 + (key / 100) * (key / 100) * 40, norm = Math.tanh(k);
-  for (let i = 0; i < n; i++) { const x = i * 2 / (n - 1) - 1; c[i] = Math.tanh(k * x) / norm; }
-  CURVES.set(key, c); return c;
+// Verzerrung: eine feste tanh-Kennlinie, die Stärke wird über die Verstärkung davor/danach geregelt.
+// (Eine WaveShaper-Kennlinie darf laut Spezifikation nur einmal gesetzt werden; Safari nimmt das genau.)
+const SHAPE_K = 41;
+let SHAPE = null;
+function shapeCurve() {
+  if (!SHAPE) { const n = 32768; SHAPE = new Float32Array(n); for (let i = 0; i < n; i++) SHAPE[i] = Math.tanh(SHAPE_K * (i * 2 / (n - 1) - 1)); }
+  return SHAPE;
 }
 function makeIR(ctx, seconds, damp) {
   const sr = ctx.sampleRate, len = Math.max(1, Math.floor(sr * seconds));
@@ -487,11 +583,15 @@ function buildEngine(ctx, get, opts = {}) {
   { const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
   const G = (v = 1) => { const g = ctx.createGain(); g.gain.value = v; return g; };
   const F = (type, freq, q) => { const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; if (q != null) f.Q.value = q; return f; };
-  const W = () => { const w = ctx.createWaveShaper(); w.oversample = '4x'; return w; };
   const setP = (param, v) => {
     if (opts.offline) param.value = v; else param.setTargetAtTime(v, ctx.currentTime, 0.015);
   };
-  const setCurve = (w, amt) => { const c = driveCurve(amt); if (w.curve !== c) w.curve = c; };
+  const D = () => {
+    const pre = G(1), w = ctx.createWaveShaper(), post = G(1);
+    w.curve = shapeCurve(); w.oversample = opts.offline ? '4x' : '2x';
+    pre.connect(w).connect(post);
+    return { in: pre, out: post, set(amt) { const k = 1 + amt * amt * 40; setP(pre.gain, k / SHAPE_K); setP(post.gain, 1 / Math.tanh(k)); } };
+  };
 
   // Master
   const masterIn = G(1), masterOut = G(1);
@@ -500,8 +600,8 @@ function buildEngine(ctx, get, opts = {}) {
   else {
     const comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -12; comp.knee.value = 8; comp.ratio.value = 3; comp.attack.value = 0.004; comp.release.value = 0.15;
-    clipIn = G(1); clip = W();
-    masterIn.connect(comp).connect(clipIn).connect(clip).connect(masterOut);
+    clipIn = G(1); clip = D();
+    masterIn.connect(comp).connect(clipIn).connect(clip.in); clip.out.connect(masterOut);
   }
   masterOut.connect(ctx.destination);
   let analyser = null;
@@ -523,13 +623,13 @@ function buildEngine(ctx, get, opts = {}) {
     c.fader.connect(masterIn); c.fader.connect(c.verbSend); c.verbSend.connect(verbIn);
     ch[t.id] = c;
   }
-  const k = ch.kick; k.shaper = W(); k.tone = F('lowpass', 8000, 0.5); k.post = G(0.9); k.rSend = G(0);
-  k.in.connect(k.shaper).connect(k.tone).connect(k.post).connect(k.fader);
-  const r = ch.rumble; r.conv = ctx.createConvolver(); r.shaper = W(); r.lp = F('lowpass', 180, 0.9); r.lp2 = F('lowpass', 180, 0.7); r.duck = G(1);
+  const k = ch.kick; k.drive = D(); k.tone = F('lowpass', 8000, 0.5); k.post = G(0.9); k.rSend = G(0);
+  k.in.connect(k.drive.in); k.drive.out.connect(k.tone).connect(k.post).connect(k.fader);
+  const r = ch.rumble; r.conv = null; r.hp = F('highpass', 32); r.drive = D(); r.lp = F('lowpass', 180, 0.9); r.lp2 = F('lowpass', 180, 0.7); r.duck = G(1);
   k.post.connect(k.rSend).connect(r.in);   // Pre-Fader: Rumble funktioniert auch als eigener Stem
-  r.in.connect(r.conv).connect(F('highpass', 32)).connect(r.shaper).connect(r.lp).connect(r.lp2).connect(r.duck).connect(r.fader);
-  const b = ch.bass; b.shaper = W();
-  b.in.connect(b.shaper).connect(F('highpass', 30)).connect(b.fader);
+  r.hp.connect(r.drive.in); r.drive.out.connect(r.lp).connect(r.lp2).connect(r.duck).connect(r.fader);
+  const b = ch.bass; b.drive = D();
+  b.in.connect(b.drive.in); b.drive.out.connect(F('highpass', 30)).connect(b.fader);
   const l = ch.lead; l.dSend = G(0);
   l.in.connect(F('highpass', 160)).connect(l.fader);
   l.fader.connect(l.dSend).connect(delayIn);
@@ -538,12 +638,17 @@ function buildEngine(ctx, get, opts = {}) {
   let rumbleSize = null;
   function update() {
     const I = get(), S = I.sound, M = I.mix;
-    setCurve(k.shaper, S.kick.drive); setP(k.tone.frequency, S.kick.tone);
+    k.drive.set(S.kick.drive); setP(k.tone.frequency, S.kick.tone);
     setP(k.rSend.gain, S.rumble.send);
-    if (rumbleSize !== S.rumble.size) { r.conv.buffer = makeIR(ctx, S.rumble.size, 0.12); rumbleSize = S.rumble.size; }
-    setCurve(r.shaper, S.rumble.drive); setP(r.lp.frequency, S.rumble.cutoff); setP(r.lp2.frequency, S.rumble.cutoff);
-    setCurve(b.shaper, S.bass.drive);
-    if (clip) { setCurve(clip, 0.1 + S.master.drive * 0.5); setP(clipIn.gain, 0.8 + S.master.drive * 0.8); }
+    if (rumbleSize !== S.rumble.size) {
+      // neuer Faltungshall statt Puffer-Tausch: funktioniert in jedem Browser
+      const c = ctx.createConvolver(); c.buffer = makeIR(ctx, S.rumble.size, 0.12);
+      if (r.conv) { try { r.in.disconnect(r.conv); r.conv.disconnect(); } catch (e) {} }
+      r.in.connect(c); c.connect(r.hp); r.conv = c; rumbleSize = S.rumble.size;
+    }
+    r.drive.set(S.rumble.drive); setP(r.lp.frequency, S.rumble.cutoff); setP(r.lp2.frequency, S.rumble.cutoff);
+    b.drive.set(S.bass.drive);
+    if (clip) { clip.set(0.1 + S.master.drive * 0.5); setP(clipIn.gain, 0.8 + S.master.drive * 0.8); }
     setP(masterOut.gain, opts.stem ? 1 : S.master.vol * 0.55);
     dly.delayTime.value = Math.min(1.9, 60 / I.bpm * 0.75);
     setP(l.dSend.gain, M.lead.delay || 0);
@@ -663,7 +768,25 @@ const play = { on: false, step: 0, next: 0, seqIdx: 0, pat: 'A' };
 const uiQueue = [];
 let phStep = -1, phPat = null;
 
+// iPhone: Ton auch bei aktivem Lautlos-Schalter
+let silentEl = null;
+function unlockIOS() {
+  try { if (navigator.audioSession) { navigator.audioSession.type = 'playback'; return; } } catch (e) {}
+  const iOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (!iOS || silentEl) return;
+  try {
+    const n = 4000, buf = new ArrayBuffer(44 + n), dv = new DataView(buf);
+    const str = (o, t) => { for (let i = 0; i < t.length; i++) dv.setUint8(o + i, t.charCodeAt(i)); };
+    str(0, 'RIFF'); dv.setUint32(4, 36 + n, true); str(8, 'WAVEfmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+    dv.setUint32(24, 8000, true); dv.setUint32(28, 8000, true); dv.setUint16(32, 1, true); dv.setUint16(34, 8, true); str(36, 'data'); dv.setUint32(40, n, true);
+    new Uint8Array(buf, 44).fill(128);
+    silentEl = new Audio(URL.createObjectURL(new Blob([buf], { type: 'audio/wav' })));
+    silentEl.loop = true; silentEl.setAttribute('playsinline', '');
+    const pr = silentEl.play(); if (pr && pr.catch) pr.catch(() => {});
+  } catch (e) {}
+}
 function ensureAudio() {
+  unlockIOS();
   if (!actx) {
     const AC = window.AudioContext || window.webkitAudioContext;
     actx = new AC({ latencyHint: 'interactive' });
@@ -671,7 +794,7 @@ function ensureAudio() {
     eng.update();
     requestAnimationFrame(frame);
   }
-  if (actx.state === 'suspended') actx.resume();
+  if (actx.state !== 'running') { const pr = actx.resume(); if (pr && pr.catch) pr.catch(() => {}); }
 }
 const stepDur = () => 60 / idea.bpm / 4;
 const swingOff = (step, sd) => (step % 2 === 1 ? (idea.swing / 100) * sd * 0.66 : 0);
@@ -693,6 +816,9 @@ function tick() {
 }
 function startPlay() {
   ensureAudio();
+  if (matchMedia('(pointer: coarse)').matches && !LS.get('rsb:soundHint')) {
+    LS.set('rsb:soundHint', '1'); toast('Kein Ton? Lautstärke hoch und Lautlos-Schalter aus.');
+  }
   eng.update();
   play.on = true; play.step = 0; play.seqIdx = 0;
   play.pat = idea.chain ? seqList()[0] : editPat;
@@ -717,7 +843,7 @@ function audition(only, deg) {
 }
 
 /* Pegelanzeige und Playhead */
-let meterBuf = null, peakHold = 0;
+let meterBuf = null, peakHold = 0, meterCol = null;
 function frame() {
   requestAnimationFrame(frame);
   if (!actx) return;
@@ -730,11 +856,12 @@ function frame() {
   an.getFloatTimeDomainData(meterBuf);
   let pk = 0; for (let i = 0; i < meterBuf.length; i++) { const a = Math.abs(meterBuf[i]); if (a > pk) pk = a; }
   peakHold = Math.max(pk, peakHold * 0.94);
-  const cv = $('#meter'), c = cv.getContext('2d'), w = cv.width, h = cv.height;
+  const cv = $('#meter'); if (!cv.offsetParent) return;
+  const c = cv.getContext('2d'), w = cv.width, h = cv.height;
   const db = 20 * Math.log10(peakHold + 1e-9), x = Math.max(0, Math.min(1, (db + 48) / 48));
   c.clearRect(0, 0, w, h);
-  const css = getComputedStyle(document.documentElement);
-  c.fillStyle = db > -1 ? css.getPropertyValue('--danger') : db > -6 ? css.getPropertyValue('--amber') : css.getPropertyValue('--uv');
+  if (!meterCol) { const css = getComputedStyle(document.documentElement); meterCol = ['--danger', '--amber', '--uv'].map(v => css.getPropertyValue(v).trim()); }
+  c.fillStyle = db > -1 ? meterCol[0] : db > -6 ? meterCol[1] : meterCol[2];
   c.fillRect(0, 0, w * x, h);
   $('#meterOut').textContent = (db < -60 ? '–∞' : db.toFixed(1)) + ' dB';
 }
@@ -791,12 +918,14 @@ function setSaveState(s, msg) {
   saveState = s;
   const p = $('#saveState'); p.dataset.s = s;
   const where = Store.cloud ? 'in claude.ai' : 'im Browser';
-  p.textContent = msg || ({
+  const text = msg || ({
     idle: isDraftTemplate ? 'Beispiel, noch nicht gespeichert' : 'Bereit',
     saving: 'Speichert …',
     saved: 'Gespeichert ' + where,
     error: 'Speichern fehlgeschlagen'
   })[s];
+  $('#saveText').textContent = text; p.title = text;
+  $('#saveInfo').textContent = 'Status: ' + text + '.';
 }
 function markDirty() {
   isDraftTemplate = false;
@@ -840,7 +969,7 @@ function renderAll() {
 }
 
 function renderTransport() {
-  $('#bpm').value = idea.bpm;
+  $('#bpm').value = idea.bpm; $('#bpmChip').textContent = idea.bpm;
   $('#swing').value = idea.swing; $('#swingOut').textContent = idea.swing + ' %';
   $('#root').value = String(idea.root);
   $('#scale').value = idea.scale;
@@ -862,7 +991,7 @@ function renderTransportState() {
   const b = $('#playBtn');
   b.textContent = play.on ? 'Stop' : 'Play';
   b.setAttribute('aria-pressed', play.on ? 'true' : 'false');
-  const f = $('#fab'); f.textContent = b.textContent; f.setAttribute('aria-pressed', play.on ? 'true' : 'false');
+  const f = $('#navPlay'); f.setAttribute('aria-pressed', play.on ? 'true' : 'false'); f.setAttribute('aria-label', play.on ? 'Stop' : 'Play');
   renderTransport();
 }
 
@@ -929,10 +1058,33 @@ function markPlayingPat() {
 
 /* Klang-Panel */
 const TABS = [['kick','Kick'],['rumble','Rumble'],['drums','Clap & Hats'],['bass','Bass'],['lead','Lead'],['master','Master'],['export','Export']];
-function openTab(id) { panelTab = id; renderTabs(); renderPanel(); renderGrid(); }
+const isMobile = () => matchMedia('(max-width: 760px)').matches;
+let view = 'beat', lastSoundTab = 'kick';
+function setView(v) {
+  const changed = v !== view;
+  view = v;
+  const app = $('.app'); app.dataset.view = v;
+  if (panelTab === 'export') app.dataset.export = ''; else delete app.dataset.export;
+  const cur = v === 'sound' && panelTab === 'export' ? 'export' : v;
+  document.querySelectorAll('[data-nav]').forEach(b => { if (b.dataset.nav === cur) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+  LS.set('rsb:view', v);
+  if (changed && isMobile()) window.scrollTo(0, 0);
+}
+function openTab(id) {
+  if (id !== 'export') lastSoundTab = id;
+  panelTab = id; renderTabs(); renderPanel(); renderGrid();
+  setView(isMobile() ? 'sound' : view);
+}
+function navTo(n) {
+  if (n === 'export') { panelTab = 'export'; renderTabs(); renderPanel(); view = ''; setView('sound'); }
+  else if (n === 'sound') {
+    if (panelTab === 'export') { panelTab = lastSoundTab; renderTabs(); renderPanel(); renderGrid(); view = ''; }
+    setView('sound');
+  } else setView(n);
+}
 function renderTabs() {
   const tb = $('#tabs'); tb.textContent = '';
-  for (const [id, name] of TABS) tb.append(el('button', { class: 'tab', role: 'tab', 'aria-selected': id === panelTab ? 'true' : 'false', text: name, onclick: () => openTab(id) }));
+  for (const [id, name] of TABS) tb.append(el('button', { class: 'tab', role: 'tab', 'data-id': id, 'aria-selected': id === panelTab ? 'true' : 'false', text: name, onclick: () => openTab(id) }));
 }
 const fmt = {
   Hz: v => Math.round(v) + ' Hz',
@@ -1333,12 +1485,22 @@ function wire() {
   for (let i = 0; i < 12; i++) $('#root').append(el('option', { value: i, text: NOTE_NAMES[i] }));
   for (const [k, s] of Object.entries(SCALES)) $('#scale').append(el('option', { value: k, text: s.name }));
   $('#playBtn').addEventListener('click', togglePlay);
-  $('#fab').addEventListener('click', togglePlay);
-  $('#bpm').addEventListener('change', e => {
-    const v = Math.min(200, Math.max(100, Math.round(+e.target.value || idea.bpm)));
-    idea.bpm = v; e.target.value = v; eng && eng.update(); markDirty();
-    if (panelTab === 'export') renderPanel();
+  $('#navPlay').addEventListener('click', togglePlay);
+  document.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => navTo(b.dataset.nav)));
+  $('#moreBtn').addEventListener('click', e => {
+    const open = $('#transport').classList.toggle('open');
+    e.currentTarget.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
+  const setBpm = raw => {
+    const v = Math.min(200, Math.max(100, Math.round(+raw || idea.bpm)));
+    idea.bpm = v; $('#bpm').value = v; $('#bpmChip').textContent = v; eng && eng.update(); markDirty();
+    if (panelTab === 'export') renderPanel();
+  };
+  $('#bpm').addEventListener('change', e => setBpm(e.target.value));
+  $('#bpmDown').addEventListener('click', () => setBpm(idea.bpm - 1));
+  $('#bpmUp').addEventListener('click', () => setBpm(idea.bpm + 1));
+  // Im Hintergrund hält der Browser den Takt nicht: sauber stoppen statt stottern
+  document.addEventListener('visibilitychange', () => { if (document.hidden && play.on) stopPlay(); });
   $('#swing').addEventListener('input', e => { idea.swing = +e.target.value; $('#swingOut').textContent = idea.swing + ' %'; markDirty(); });
   $('#root').addEventListener('change', e => { idea.root = +e.target.value; markDirty(); renderGrid(); renderPanel(); });
   $('#scale').addEventListener('change', e => { idea.scale = e.target.value; markDirty(); renderGrid(); renderPanel(); });
@@ -1385,6 +1547,7 @@ function wire() {
 
 /* ---------- Start ---------- */
 wire();
+{ const v = LS.get('rsb:view'); if (v === 'beat' || v === 'sound' || v === 'ideas') setView(v); }
 Store.initLocal();
 (function boot() {
   let draft = null;
