@@ -165,6 +165,13 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);
   padding:9px 14px;border-radius:8px;font-weight:600;font-size:13px;max-width:calc(100% - 32px);z-index:20}
 
+.fab{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;
+  width:68px;height:68px;border-radius:50%;border:0;background:var(--uv);color:var(--uv-ink);cursor:pointer;
+  font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 6px 22px rgba(0,0,0,.55)}
+.fab[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink)}
+@media (min-width: 641px) and (pointer: fine){.fab{display:none}}
+@media (pointer: coarse){.kbd-hint{display:none}}
+
 @media (max-width: 960px){
   .layout{grid-template-columns:minmax(0,1fr)}
   .ideas{order:2}
@@ -179,6 +186,8 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
   .step:nth-child(8n+5){margin-left:6px}
   .row.bus{display:none}
   .idea-name{font-size:17px}
+  .app{padding-block:16px 104px}
+  .toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 }
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
@@ -247,7 +256,7 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
           <div class="legend">
             <span><i style="background:var(--uv)"></i>an</span>
             <span><i style="background:var(--amber)"></i>Akzent (2. Klick)</span>
-            <span>Leertaste: Play/Stop</span>
+            <span class="kbd-hint">Leertaste: Play/Stop</span>
           </div>
         </div>
         <div id="grid"></div>
@@ -261,6 +270,7 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
   </main>
 </div>
 <div id="toast" class="toast" role="status" hidden></div>
+<button id="fab" class="fab" aria-pressed="false" aria-label="Wiedergabe starten oder stoppen">Play</button>
 
 <script>
 (() => {
@@ -852,6 +862,7 @@ function renderTransportState() {
   const b = $('#playBtn');
   b.textContent = play.on ? 'Stop' : 'Play';
   b.setAttribute('aria-pressed', play.on ? 'true' : 'false');
+  const f = $('#fab'); f.textContent = b.textContent; f.setAttribute('aria-pressed', play.on ? 'true' : 'false');
   renderTransport();
 }
 
@@ -1322,6 +1333,7 @@ function wire() {
   for (let i = 0; i < 12; i++) $('#root').append(el('option', { value: i, text: NOTE_NAMES[i] }));
   for (const [k, s] of Object.entries(SCALES)) $('#scale').append(el('option', { value: k, text: s.name }));
   $('#playBtn').addEventListener('click', togglePlay);
+  $('#fab').addEventListener('click', togglePlay);
   $('#bpm').addEventListener('change', e => {
     const v = Math.min(200, Math.max(100, Math.round(+e.target.value || idea.bpm)));
     idea.bpm = v; e.target.value = v; eng && eng.update(); markDirty();
