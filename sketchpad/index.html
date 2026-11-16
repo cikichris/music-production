@@ -365,7 +365,8 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
     <aside class="ideas" aria-label="Ideen">
       <h2 class="h">Neue Idee</h2>
       <div class="newrow">
-        <button class="btn primary" data-tpl="bounce">Bounce-Track würfeln</button>
+        <button class="btn primary" data-tpl="dark">Bounce würfeln: dunkel</button>
+        <button class="btn primary" data-tpl="bounce">Bounce würfeln: hell</button>
         <button class="btn" data-tpl="hardtechno">Hardtechno</button>
         <button class="btn" data-tpl="blank">Leer</button>
       </div>
@@ -528,14 +529,19 @@ const chordName = (I, c) => NOTE_NAMES[(I.root + SCALES.minor.iv[c]) % 12] + CHO
 
 /* Melodischer Bounce mit Hardtechno-Kante: 4-Takt-Akkordfolge, Offbeat-Bass, Stabs, Pluck-Melodie,
    dazu ein fertiges Arrangement mit wenigen, kurzen Breaks. */
-function generateBounce(seed) {
+function generateBounce(seed, dark = false) {
   const R = rng(seed), pick = a => a[Math.floor(R() * a.length)];
   const I = baseIdea();
-  I.name = pick(['Nachtfahrt','Neonregen','Kellerlicht','Stroboskop','Hochdruck','Funkenflug','Überholspur','Sturmfrei','Kurzschluss','Dauerfeuer','Betonherz','Lichtbogen','Nordkurve','Rauschzustand']);
-  I.bpm = pick([155, 156, 158, 158, 160]);
-  I.root = pick([4, 5, 6, 7, 9]);   // E, F, F#, G, A
+  // dark: dunkler und treibender, näher am Hardtechno. Der Grundakkord bleibt länger stehen, der Bass rollt, statt zu springen.
+  I.name = dark
+    ? pick(['Kaltstart','Schattenriss','Nachtschicht','Tiefgang','Sperrstunde','Stahlwerk','Dunkelkammer','Unterstrom','Grenzbereich','Restlicht','Sog','Nullpunkt'])
+    : pick(['Nachtfahrt','Neonregen','Kellerlicht','Stroboskop','Hochdruck','Funkenflug','Überholspur','Sturmfrei','Kurzschluss','Dauerfeuer','Betonherz','Lichtbogen','Nordkurve','Rauschzustand']);
+  I.bpm = dark ? pick([150, 152, 152, 154]) : pick([155, 156, 158, 158, 160]);
+  I.root = dark ? pick([4, 5, 6, 7]) : pick([4, 5, 6, 7, 9]);   // E, F, F#, G, (A)
   I.scale = 'minor';
-  const prog = pick([[0,5,2,6],[0,5,6,4],[5,6,0,0],[0,2,6,5],[0,6,5,6],[5,0,2,6],[0,3,5,6],[0,5,3,6]]);
+  const prog = dark
+    ? pick([[0,0,5,6],[0,5,0,6],[0,0,3,6],[0,6,5,6],[0,0,6,5],[0,3,0,6]])
+    : pick([[0,5,2,6],[0,5,6,4],[5,6,0,0],[0,2,6,5],[0,6,5,6],[5,0,2,6],[0,3,5,6],[0,5,3,6]]);
 
   // Klang: Kick auf den Grundton gestimmt, härter verzerrt, leichte Rumble für Gewicht
   Object.assign(I.sound.kick, { start: pick([480, 520, 560]), end: Math.round(mtof(24 + I.root)), pdecay: 0.035, decay: pick([0.34, 0.38, 0.42]), click: 0.45, drive: pick([0.62, 0.68, 0.74]), tone: 7500 });
@@ -546,11 +552,19 @@ function generateBounce(seed) {
   Object.assign(I.sound.clap, { decay: 0.22, tone: 1300 });
   I.mix.rumble.vol = 0.6; I.mix.hat.vol = 0.5; I.mix.ohat.vol = 0.6; I.mix.bass.vol = 0.7;
   I.mix.lead.vol = 0.52; I.mix.lead.delay = 0.12; I.mix.pluck.vol = 0.7;
+  if (dark) {
+    Object.assign(I.sound.kick, { start: pick([380, 420, 460]), decay: pick([0.46, 0.5, 0.54]), click: 0.35, drive: pick([0.78, 0.84]), tone: 5500 });
+    Object.assign(I.sound.rumble, { send: 0.45, size: 1.3, cutoff: 160 });
+    Object.assign(I.sound.bass, { cutoff: 380, decay: 0.12, drive: 0.7 });
+    Object.assign(I.sound.lead, { chord: false, detune: 16, cutoff: 3000, gate: 0.5, release: 0.1 });
+    Object.assign(I.sound.pluck, { cutoff: pick([1100, 1300]), env: 0.7 });
+    I.mix.rumble.vol = 0.7; I.mix.lead.verb = 0.4; I.mix.lead.delay = 0.3; I.mix.pluck.vol = 0.64;
+  }
 
   // Bass: Grundton der Akkorde um den Grundton der Tonart gelegt, mit Oktavsprung
   const bRoot = c => (c <= 2 ? c + 7 : c);
   const bAlt = b => (b + 7 <= ROLL_TOP ? b + 7 : b - 7);
-  const bassRs = [['.', '.', 'r', 'a'], ['.', 'r', 'r', 'a'], ['.', '.', 'r', 'r'], ['.', 'a', 'r', 'a']];
+  const bassRs = dark ? [['.', 'r', 'r', 'r'], ['.', '.', 'r', 'r'], ['.', 'r', 'r', '.']] : [['.', '.', 'r', 'a'], ['.', 'r', 'r', 'a'], ['.', '.', 'r', 'r'], ['.', 'a', 'r', 'a']];
   const bassR1 = pick(bassRs), bassR2 = pick(bassRs.filter(x => x !== bassR1));
   const bassBar = (c, rh) => {
     const o = {};
@@ -558,12 +572,15 @@ function generateBounce(seed) {
     return mel(o);
   };
   // Stabs: Dreiklänge im Rhythmus
-  const stabR = pick([[2, 6, 10, 14], [0, 3, 6, 8, 11, 14], [3, 6, 11, 14], [0, 3, 6, 10, 14]]);
+  const stabR = dark ? pick([[3, 6, 11, 14], [2, 5, 10, 13], [3, 7, 11, 15], [0, 3, 6, 11, 14]]) : pick([[2, 6, 10, 14], [0, 3, 6, 8, 11, 14], [3, 6, 11, 14], [0, 3, 6, 10, 14]]);
   const stabBar = c => mel(Object.fromEntries(stabR.map(st => [st, c])));
   // Melodie: nur Akkordtöne, gleiche Kontur über jeden Akkord (das macht sie eingängig), Takt 4 läuft rückwärts
   const ladder = c => { const pcs = [c % 7, (c + 2) % 7, (c + 4) % 7], out = []; for (let d = 3; d <= 13; d++) if (pcs.includes(d % 7)) out.push(d); return out; };
-  const melRs = [[0, 3, 6, 8, 11, 14], [0, 2, 3, 6, 8, 10, 11, 14], [0, 3, 4, 6, 8, 11, 12, 14], [2, 3, 6, 7, 10, 11, 14, 15], [0, 3, 6, 7, 8, 11, 14, 15]];
-  const contour = n => { const c = [pick([1, 2, 3])]; for (let i = 1; i < n; i++) c.push(Math.max(0, Math.min(4, c[i - 1] + pick([-2, -1, -1, 1, 1, 2, 0])))); return c; };
+  const melRs = dark
+    ? [[0, 3, 6, 11, 14], [2, 6, 8, 11, 14], [0, 3, 8, 11], [3, 6, 8, 14], [0, 6, 8, 14]]
+    : [[0, 3, 6, 8, 11, 14], [0, 2, 3, 6, 8, 10, 11, 14], [0, 3, 4, 6, 8, 11, 12, 14], [2, 3, 6, 7, 10, 11, 14, 15], [0, 3, 6, 7, 8, 11, 14, 15]];
+  const jumps = dark ? [-1, -1, 1, 1, 0] : [-2, -1, -1, 1, 1, 2, 0], top = dark ? 3 : 4;
+  const contour = n => { const c = [pick([1, 2, 3])]; for (let i = 1; i < n; i++) c.push(Math.max(0, Math.min(top, c[i - 1] + pick(jumps)))); return c; };
   const melBar = (c, rh, con) => { const L = ladder(c); return mel(Object.fromEntries(rh.map((st, i) => [st, L[Math.min(L.length - 1, con[i])]]))); };
   const melR1 = pick(melRs), melR2 = pick(melRs.filter(x => x !== melR1));
   const con1 = contour(melR1.length), con2 = contour(melR2.length);
@@ -600,7 +617,7 @@ function generateBounce(seed) {
     S('Outro',        'ABCD',  8, ['lead','pluck','clap'], { crash: true }),
     S('Ausklang',     'ABCD',  8, ['lead','pluck','clap','bass','ohat'], {})
   ];
-  I.notes = `Melodischer Bounce mit Hardtechno-Kante.\nAkkorde: ${prog.map(c => chordName(I, c)).join(' – ')} (je ein Takt)\nKick ist auf ${NOTE_NAMES[I.root]} gestimmt. Patterns A–D = Thema 1, E–H = Thema 2.`;
+  I.notes = `${dark ? 'Dunkler, treibender Bounce: rollender Bass, mehr Rumble, kurzer Hook.' : 'Melodischer Bounce mit Hardtechno-Kante.'}\nAkkorde: ${prog.map(c => chordName(I, c)).join(' – ')} (je ein Takt)\nKick ist auf ${NOTE_NAMES[I.root]} gestimmt. Patterns A–D = Thema 1, E–H = Thema 2.`;
   return I;
 }
 
@@ -1179,12 +1196,13 @@ function loadIdea(I, { draft = false } = {}) {
   setSaveState(draft ? 'idle' : 'saved');
 }
 function newFromTemplate(name) {
-  const I = name === 'bounce' ? generateBounce((Date.now() ^ (Math.random() * 1e9)) >>> 0) : TEMPLATES[name]();
+  const gen = name === 'bounce' || name === 'dark';
+  const I = gen ? generateBounce((Date.now() ^ (Math.random() * 1e9)) >>> 0, name === 'dark') : TEMPLATES[name]();
   I.id = uid();
   loadIdea(I);
   if (name !== 'blank') setMode('song');
   markDirty();
-  toast(name === 'bounce' ? 'Neue Bounce-Idee gewürfelt: ' + I.name : 'Neue Idee angelegt');
+  toast(gen ? 'Neue Bounce-Idee gewürfelt: ' + I.name : 'Neue Idee angelegt');
 }
 
 /* ---------- Rendering ---------- */
@@ -1878,7 +1896,7 @@ function wire() {
     LS.del('rsb:draft');
     const next = Store.list.find(x => x.id !== id);
     if (next) { try { loadIdea(JSON.parse(next.json)); } catch (_) { loadIdea(TEMPLATES.blank(), { draft: true }); } }
-    else loadIdea(generateBounce(7), { draft: true });
+    else loadIdea(generateBounce(7, true), { draft: true });
     toast('Idee gelöscht');
   });
   document.addEventListener('keydown', e => {
@@ -1898,7 +1916,7 @@ Store.initLocal();
   let draft = null;
   try { draft = JSON.parse(LS.get('rsb:draft') || 'null'); } catch (e) { draft = null; }
   if (draft && draft.id) loadIdea(draft);
-  else loadIdea(generateBounce(7), { draft: true });
+  else loadIdea(generateBounce(7, true), { draft: true });
 })();
 Store.initCloud();
 })();

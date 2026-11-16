@@ -20,7 +20,7 @@ Läuft komplett im Browser, ohne Installation und ohne Samples. Alle Sounds werd
 | --- | --- |
 | Step-Sequencer | Kick, Clap, Hi-Hat, Open Hat (Klick: an, Akzent, aus), Bass und Lead mit Notennamen |
 | Patterns | A–H pro Idee, kopieren, leeren |
-| Ideen-Generator | „Bounce-Track würfeln“ erzeugt jedes Mal eine neue melodische Bounce-Idee mit Akkordfolge, Bass, Stabs, Melodie und fertigem Arrangement |
+| Ideen-Generator | „Bounce würfeln“ in zwei Richtungen (dunkel und treibend, oder hell und melodisch): jedes Mal eine neue Idee mit Akkordfolge, Bass, Stabs, Melodie und fertigem Arrangement |
 | Song | Abschnitte mit Pattern-Folge, Länge, Spuren an/aus und Übergängen (Crash, Riser, Clap-Roll, Kick-Pause, Filterfahrt) |
 | Kick-Designer | Pitch-Start, Grundton, Pitch-Sweep, Länge, Klick, Verzerrung, Höhen |
 | Rumble | Hall auf der Kick, verzerrt und tiefpassgefiltert, mit Ducking |
@@ -42,3 +42,4 @@ Audio-Dateien und Exporte sind per `.gitignore` ausgeschlossen. Ins Repo kommen 
 | Projekt | Stil | Tempo / Tonart | Datei |
 | --- | --- | --- | --- |
 | Projekt 01 – Überholspur | Melodischer Bounce mit Hardtechno-Kante, 136 Takte, ca. 3:27 | 158 BPM, F-Moll | `ideas/projekt-01-ueberholspur.json` |
+| Projekt 02 – Sperrstunde | Dunkler, treibender Bounce: rollender Bass, mehr Rumble, kurzer Hook, 136 Takte, ca. 3:35 | 152 BPM, F-Moll | `ideas/projekt-02-sperrstunde.json` |
