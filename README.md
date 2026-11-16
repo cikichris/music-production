@@ -13,8 +13,8 @@ Privates Repo für eigene Hardbounce- und Hardtechno-Produktionen.
 
 Läuft komplett im Browser, ohne Installation und ohne Samples. Alle Sounds werden per Web Audio synthetisiert.
 
-- **Lokal:** `sketchpad/index.html` per Doppelklick im Browser öffnen (Chrome oder Firefox). Ideen werden im Browser gespeichert.
-- **In claude.ai:** als private Seite. Dort werden Ideen in der Cloud gespeichert, und Claude kann sie lesen und weiterverarbeiten.
+- **Lokal:** `sketchpad/index.html` per Doppelklick im Browser öffnen (Chrome oder Firefox). Ideen werden im Browser gespeichert. Nur hier gibt es den Knopf „Aufnehmen“ fürs Mikrofon.
+- **In claude.ai:** als private Seite. Dort werden Ideen und Vocals in der Cloud gespeichert, und Claude kann die Ideen lesen und weiterverarbeiten. Mikrofonzugriff gibt es dort nicht, Vocals kommen über „Aufnahme laden“.
 
 | Bereich | Was es kann |
 | --- | --- |
@@ -25,6 +25,7 @@ Läuft komplett im Browser, ohne Installation und ohne Samples. Alle Sounds werd
 | Kick-Designer | Pitch-Start, Grundton, Pitch-Sweep, Länge, Klick, Verzerrung, Höhen |
 | Rumble | Hall auf der Kick, verzerrt und tiefpassgefiltert, mit Ducking |
 | Bass / Lead / Pluck | Piano-Roll nur mit Tönen der Tonart; Lead mit Supersaw und Akkord-Modus, Pluck für Melodien |
+| Vocals | Eigene Aufnahmen laden (z. B. aus „Sprachmemos“) oder lokal am Rechner direkt einsingen; Ausschnitt, Tonhöhe, Verzerrung, Filter, Zerhacker, Hall und Delay; pro Song-Abschnitt platzierbar |
 | Export | Ganzer Song oder Pattern-Loop als ZIP mit Mix, Stems, MIDI (Drum-Rack-Belegung C1/D#1/F#1/A#1), `idee.json` und Anleitung |
 
 Leertaste startet und stoppt die Wiedergabe.

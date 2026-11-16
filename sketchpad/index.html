@@ -195,6 +195,18 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
 .sec input[type=text]{background:var(--raise);border:1px solid var(--line);border-radius:6px;height:34px;padding:0 8px;min-width:0;flex:1 1 140px}
 .seqshow{font-family:var(--f-mono);letter-spacing:.22em;color:var(--uv);font-weight:600;font-size:15px;min-width:3ch}
 .barsval{font-family:var(--f-mono);min-width:76px;text-align:center}
+/* Vocals */
+.voxlist{display:flex;flex-direction:column;gap:10px}
+.vox{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:12px;display:flex;flex-direction:column;gap:12px}
+.voxhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.voxhead input[type=text]{flex:1 1 140px;min-width:0;background:var(--raise);border:1px solid var(--line);border-radius:6px;height:34px;padding:0 8px}
+.voxmeta{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.wave{width:100%;height:56px;display:block;border-radius:6px;background:var(--raise)}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+.howto{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:13px;max-width:70ch}
+.filebtn{display:inline-flex;align-items:center;position:relative}
+.btn.rec.on{background:var(--danger);border-color:var(--danger);color:var(--bg)}
+.sdots i.vx.on{background:var(--amber)}
 .export{display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);padding-top:16px}
 .exopts{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:end}
 .exlist{margin:0;padding-left:18px;color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;gap:3px;max-width:75ch}
@@ -253,6 +265,8 @@ input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;bac
   .chip{height:40px;padding:0 13px;font-size:13.5px}
   .chip.sq{min-width:40px}
   .sec input[type=text]{height:44px;flex:1 1 100%}
+  .voxhead input[type=text]{height:44px;flex:1 1 100%}
+  .wave{height:72px}
   .barsval{flex:1}
   .shead{padding:13px 12px}
   .t-pat>span:first-child{display:none}
@@ -476,8 +490,8 @@ const TRACKS = [
 ];
 const DRUMS = ['kick','clap','hat','ohat'];
 const MELS = ['bass','lead','pluck'];
-const CHANNELS = [...TRACKS.map(t => t.id), 'fx'];
-const CH_NAMES = Object.assign(Object.fromEntries(TRACKS.map(t => [t.id, t.name])), { fx: 'FX' });
+const CHANNELS = [...TRACKS.map(t => t.id), 'fx', 'vox'];
+const CH_NAMES = Object.assign(Object.fromEntries(TRACKS.map(t => [t.id, t.name])), { fx: 'FX', vox: 'Vocals' });
 
 /* ---------- Datenmodell ---------- */
 function emptyPattern() {
@@ -503,17 +517,17 @@ function defaultMix() {
   const m = (vol, verb = 0, extra = {}) => Object.assign({ vol, verb, mute: false, solo: false }, extra);
   return {
     kick: m(0.9), rumble: m(0.75), clap: m(0.78, 0.25), hat: m(0.55, 0.04), ohat: m(0.58, 0.1),
-    bass: m(0.62), lead: m(0.5, 0.3, { delay: 0.18 }), pluck: m(0.66, 0.25, { delay: 0.3 }), fx: m(0.6, 0.35)
+    bass: m(0.62), lead: m(0.5, 0.3, { delay: 0.18 }), pluck: m(0.66, 0.25, { delay: 0.3 }), fx: m(0.6, 0.35), vox: m(0.8, 0.3, { delay: 0.25 })
   };
 }
 function newSection(o = {}) {
-  return Object.assign({ name: 'Teil', seq: 'A', bars: 8, off: {}, crash: false, riser: false, roll: false, sweep: false, gap: false }, o);
+  return Object.assign({ name: 'Teil', seq: 'A', bars: 8, off: {}, crash: false, riser: false, roll: false, sweep: false, gap: false, vox: { clip: '', bar: 0, every: 0 } }, o);
 }
 function baseIdea() {
   return {
     v: 2, id: uid(), name: 'Neue Idee', notes: '', bpm: 150, swing: 0, root: 9, scale: 'minor',
     patterns: Object.fromEntries(PAT_KEYS.map(k => [k, emptyPattern()])),
-    song: [], sound: defaultSound(), mix: defaultMix(), updated: 0
+    song: [], vox: [], sound: defaultSound(), mix: defaultMix(), updated: 0
   };
 }
 const drum = s => [...s].map(c => c === 'X' ? 2 : c === 'x' ? 1 : 0);
@@ -681,6 +695,11 @@ function normalize(raw) {
       const n = p[t][i]; return n && Number.isFinite(n.d) ? { d: Math.max(0, Math.min(ROLL_TOP, Math.round(n.d))) } : null;
     });
   }
+  I.vox = (Array.isArray(I.vox) ? I.vox : []).filter(c => c && typeof c.id === 'string').slice(0, 12).map(c => ({
+    id: c.id, name: String(c.name || 'Vocal').slice(0, 30), dur: +c.dur || 0, asset: typeof c.asset === 'string' ? c.asset : null,
+    fx: merge(defaultVoxFx(+c.dur || 0), c.fx || {})
+  }));
+  const voxIds = new Set(I.vox.map(c => c.id));
   let song = Array.isArray(I.song) ? I.song.filter(x => x && typeof x === 'object') : [];
   if (!song.length) {
     // ältere Ideen ohne Arrangement: gefüllte Patterns als ein Abschnitt
@@ -691,12 +710,15 @@ function normalize(raw) {
     const seq = [...String(x.seq || 'A').toUpperCase()].filter(c => PAT_KEYS.includes(c)).join('').slice(0, 16) || 'A';
     const off = {};
     for (const t of TRACKS) if (t.type !== 'bus' && x.off && x.off[t.id]) off[t.id] = true;
-    return { name: String(x.name || 'Teil').slice(0, 24), seq, bars: Math.max(1, Math.min(64, Math.round(+x.bars || 8))), off,
+    const bars = Math.max(1, Math.min(64, Math.round(+x.bars || 8)));
+    const vx = x.vox && voxIds.has(x.vox.clip) ? { clip: x.vox.clip, bar: Math.max(0, Math.min(bars - 1, Math.round(+x.vox.bar || 0))), every: [0, 1, 2, 4, 8].includes(+x.vox.every) ? +x.vox.every : 0 } : { clip: '', bar: 0, every: 0 };
+    return { name: String(x.name || 'Teil').slice(0, 24), seq, bars, off, vox: vx,
       crash: !!x.crash, riser: !!x.riser, roll: !!x.roll, sweep: !!x.sweep, gap: !!x.gap };
   });
   delete I.chain;
   return I;
 }
+const defaultVoxFx = dur => ({ pitch: 0, drive: 0.55, lo: 180, hi: 6000, chop: false, vol: 0.8, start: 0, end: dur });
 function patEmpty(p) { return DRUMS.every(t => p[t].every(v => !v)) && MELS.every(t => p[t].every(n => !n)); }
 
 // Arrangement als Liste einzelner Takte
@@ -705,11 +727,13 @@ function songEntries(from = 0) {
   idea.song.forEach((sec, si) => {
     if (si < from) return;
     const rl = sec.riser ? Math.min(2, sec.bars) : 0;
-    for (let b = 0; b < sec.bars; b++) out.push({ si, sec, bar: b, pat: sec.seq[b % sec.seq.length], first: b === 0, last: b === sec.bars - 1, riserStart: rl > 0 && b === sec.bars - rl, riserBars: rl });
+    const vx = sec.vox && sec.vox.clip ? sec.vox : null;
+    for (let b = 0; b < sec.bars; b++) out.push({ si, sec, bar: b, pat: sec.seq[b % sec.seq.length], first: b === 0, last: b === sec.bars - 1, riserStart: rl > 0 && b === sec.bars - rl, riserBars: rl,
+      vox: vx && b >= vx.bar && (vx.every ? (b - vx.bar) % vx.every === 0 : b === vx.bar) ? vx.clip : null });
   });
   return out;
 }
-const loopEntry = pat => ({ si: -1, sec: null, bar: 0, pat, first: false, last: false, riserStart: false, riserBars: 0 });
+const loopEntry = pat => ({ si: -1, sec: null, bar: 0, pat, first: false, last: false, riserStart: false, riserBars: 0, vox: null });
 const GAP_OFF = { kick: true, bass: true };
 const rollStep = st => st >= 8 || st % 2 === 0;
 // Ein Step eines Takts: Noten plus Übergänge des Abschnitts. t0 ist die Zeit ohne Swing.
@@ -724,6 +748,10 @@ function scheduleStep(e, en, step, t0, sd) {
   const t = t0 + swingOff(step, sd);
   e.trigger(idea.patterns[en.pat], step, t, sd, { off });
   if (sec && sec.roll && en.last && rollStep(step)) e.clapHit(t, 0.3 + 0.7 * step / 15);
+  if (step === 0 && en.vox) {
+    const c = idea.vox.find(v => v.id === en.vox), buf = c && voxBufs.get(c.id);
+    if (buf) e.vox(t0, buf, c.fx, sd);
+  }
 }
 
 /* ---------- Audio-Engine (Echtzeit und Offline-Render) ---------- */
@@ -758,10 +786,11 @@ function buildEngine(ctx, get, opts = {}) {
   const setP = (param, v) => {
     if (opts.offline) param.value = v; else param.setTargetAtTime(v, ctx.currentTime, 0.015);
   };
-  const D = () => {
+  const D = amt0 => {
     const pre = G(1), w = ctx.createWaveShaper(), post = G(1);
     w.curve = shapeCurve(); w.oversample = opts.offline ? '4x' : '2x';
     pre.connect(w).connect(post);
+    if (amt0 != null) { const k = 1 + amt0 * amt0 * 40; pre.gain.value = k / SHAPE_K; post.gain.value = 1 / Math.tanh(k); }
     return { in: pre, out: post, set(amt) { const k = 1 + amt * amt * 40; setP(pre.gain, k / SHAPE_K); setP(post.gain, 1 / Math.tanh(k)); } };
   };
 
@@ -809,6 +838,8 @@ function buildEngine(ctx, get, opts = {}) {
   pl.in.connect(F('highpass', 220)).connect(pl.sweep).connect(pl.fader);
   pl.fader.connect(pl.dSend).connect(delayIn);
   ch.fx.in.connect(ch.fx.fader);
+  const vx = ch.vox; vx.dSend = G(0);
+  vx.in.connect(vx.fader); vx.fader.connect(vx.dSend).connect(delayIn);
   for (const id of ['clap','hat','ohat']) ch[id].in.connect(ch[id].fader);
 
   let rumbleSize = null;
@@ -827,7 +858,7 @@ function buildEngine(ctx, get, opts = {}) {
     if (clip) { clip.set(0.1 + S.master.drive * 0.5); setP(clipIn.gain, 0.8 + S.master.drive * 0.8); }
     setP(masterOut.gain, opts.stem ? 1 : S.master.vol * 0.55);
     dly.delayTime.value = Math.min(1.9, 60 / I.bpm * 0.75);
-    setP(l.dSend.gain, M.lead.delay || 0); setP(pl.dSend.gain, M.pluck.delay || 0);
+    setP(l.dSend.gain, M.lead.delay || 0); setP(pl.dSend.gain, M.pluck.delay || 0); setP(vx.dSend.gain, M.vox.delay || 0);
     const anySolo = CHANNELS.some(id => M[id].solo);
     for (const id of CHANNELS) {
       const m = M[id];
@@ -958,6 +989,26 @@ function buildEngine(ctx, get, opts = {}) {
     sweep(now, 0);
   }
   const clapHit = (t, vel) => clap(t, vel, get().sound.clap);
+  // Vocal-Clip: Ausschnitt abspielen, Tonhöhe über die Geschwindigkeit, danach Filter, Verzerrung, optional Zerhacker
+  function vox(t, buf, fx, sd) {
+    const rate = Math.pow(2, (fx.pitch || 0) / 12);
+    const off = Math.max(0, Math.min(buf.duration - 0.03, fx.start || 0));
+    const end = fx.end > off + 0.03 ? Math.min(buf.duration, fx.end) : buf.duration;
+    const len = end - off, playDur = len / rate;
+    const src = ctx.createBufferSource(); src.buffer = buf; src.playbackRate.value = rate;
+    const d = D(fx.drive), g = G(0);
+    src.connect(F('highpass', fx.lo, 0.7)).connect(d.in); d.out.connect(F('lowpass', fx.hi, 0.7)).connect(g);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(fx.vol, t + 0.008);
+    g.gain.setValueAtTime(fx.vol, t + Math.max(0.01, playDur - 0.02)); g.gain.linearRampToValueAtTime(0, t + playDur);
+    let last = g;
+    if (fx.chop) {
+      const c = G(1);
+      for (let x = t; x < t + playDur; x += sd) { c.gain.setValueAtTime(1, x); c.gain.setValueAtTime(0, x + sd * 0.55); }
+      g.connect(c); last = c;
+    }
+    last.connect(ch.vox.in);
+    src.start(t, off, len); src.stop(t + playDur + 0.02); keep(src); done(src, last);
+  }
 
   function trigger(p, step, t, sd, o) {
     const I = get(), S = I.sound, only = o && o.only, off = o && o.off;
@@ -977,7 +1028,7 @@ function buildEngine(ctx, get, opts = {}) {
     const pn = p.pluck[step];
     if (pn && want('pluck')) pluck(t, degMidi(I, pn.d, baseFor(I, 'pluck')), sd, S.pluck);
   }
-  return { update, trigger, analyser, crash, riser, sweep, panic, clapHit };
+  return { update, trigger, analyser, crash, riser, sweep, panic, clapHit, vox };
 }
 
 /* ---------- Zustand ---------- */
@@ -1192,6 +1243,7 @@ function loadIdea(I, { draft = false } = {}) {
   isDraftTemplate = draft;
   if (!draft) LS.set('rsb:last', idea.id);
   if (eng) eng.update();
+  loadAllVox();
   renderAll();
   setSaveState(draft ? 'idle' : 'saved');
 }
@@ -1304,7 +1356,7 @@ function markPlayingPat() {
 }
 
 /* Klang-Panel */
-const TABS = [['kick','Kick'],['rumble','Rumble'],['drums','Clap & Hats'],['bass','Bass'],['lead','Lead'],['pluck','Pluck'],['master','Master'],['song','Song & Export']];
+const TABS = [['kick','Kick'],['rumble','Rumble'],['drums','Clap & Hats'],['bass','Bass'],['lead','Lead'],['pluck','Pluck'],['vox','Vocals'],['master','Master'],['song','Song & Export']];
 const isMobile = () => matchMedia('(max-width: 760px)').matches;
 let view = 'beat', lastSoundTab = 'kick';
 function setView(v) {
@@ -1339,7 +1391,8 @@ const fmt = {
   '%': v => Math.round(v * 100) + ' %',
   s: v => v.toFixed(2) + ' s',
   ct: v => Math.round(v) + ' ct',
-  st: v => v.toFixed(2).replace(/\.?0+$/, '') + ' Steps'
+  st: v => v.toFixed(2).replace(/\.?0+$/, '') + ' Steps',
+  HT: v => (v > 0 ? '+' : '') + v + ' HT'
 };
 let pid = 0;
 function slider(label, obj, key, min, max, step, unit, onAfter) {
@@ -1471,6 +1524,8 @@ function renderPanel() {
         slider('Übergänge: Hall', M.fx, 'verb', 0, 1, 0.01, '%')
       )
     );
+  } else if (panelTab === 'vox') {
+    renderVox(pb);
   } else if (panelTab === 'song') {
     renderSong(pb);
   }
@@ -1501,6 +1556,223 @@ function renderRoll(tr) {
   }
   host.append(el('div', { class: 'roll-wrap' }, roll));
   applyPlayhead();
+}
+
+/* ---------- Vocals ---------- */
+const VOX_SR = 44100, VOX_MAX = 24;      // Sekunden pro Clip
+const voxBufs = new Map();               // Clip-ID -> AudioBuffer (Mono)
+const voxState = {};                     // Clip-ID -> 'loading' | 'missing'
+let Assets = null;                       // Cloud-Ablage in claude.ai, sonst null
+const IDB = {
+  open() {
+    return new Promise((res, rej) => {
+      try {
+        const r = indexedDB.open('rsb-vox', 1);
+        r.onupgradeneeded = () => r.result.createObjectStore('clips');
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+      } catch (e) { rej(e); }
+    });
+  },
+  async tx(mode, fn) {
+    try {
+      const db = await this.open();
+      return await new Promise((res, rej) => { const t = db.transaction('clips', mode), q = fn(t.objectStore('clips')); t.oncomplete = () => res(q && q.result); t.onerror = () => rej(t.error); });
+    } catch (e) { return undefined; }
+  },
+  get(id) { return this.tx('readonly', st => st.get(id)); },
+  put(id, v) { return this.tx('readwrite', st => st.put(v, id)); },
+  del(id) { return this.tx('readwrite', st => st.delete(id)); }
+};
+const b64enc = u8 => { let out = ''; for (let i = 0; i < u8.length; i += 0x8000) out += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(out); };
+const b64dec = str => { const bin = atob(str), u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i); return u8; };
+const tmpCtx = () => new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 1, VOX_SR);
+function bufFromI16(i16) {
+  const buf = tmpCtx().createBuffer(1, i16.length, VOX_SR), d = buf.getChannelData(0);
+  for (let i = 0; i < i16.length; i++) d[i] = i16[i] / 32767;
+  return buf;
+}
+function i16FromBuf(buf) {
+  const d = buf.getChannelData(0), o = new Int16Array(d.length);
+  for (let i = 0; i < d.length; i++) o[i] = Math.round(Math.max(-1, Math.min(1, d[i])) * 32767);
+  return o;
+}
+const decodeAudio = ab => new Promise((res, rej) => { const p = tmpCtx().decodeAudioData(ab, res, rej); if (p && p.catch) p.catch(rej); });
+
+async function uploadVox(clip) {
+  if (!Assets || clip.asset || !voxBufs.has(clip.id)) return;
+  try {
+    const json = JSON.stringify({ v: 1, sr: VOX_SR, b64: b64enc(new Uint8Array(i16FromBuf(voxBufs.get(clip.id)).buffer)) });
+    const r = await Assets.upload(new Blob([json], { type: 'application/json' }), { type: 'application/json' });
+    clip.asset = r.id; markDirty();
+    if (panelTab === 'vox') renderPanel();
+  } catch (e) { console.warn('vox upload', e); toast('Vocal bleibt vorerst nur auf diesem Gerät gespeichert'); }
+}
+async function loadVox(clip) {
+  if (voxBufs.has(clip.id) || voxState[clip.id] === 'loading') return;
+  voxState[clip.id] = 'loading';
+  let i16 = null;
+  const local = await IDB.get(clip.id);
+  if (local && local.pcm) i16 = new Int16Array(local.pcm);
+  if (!i16 && clip.asset) {
+    try { const r = await fetch('/_blob/' + clip.asset); if (r.ok) { const j = await r.json(); i16 = new Int16Array(b64dec(j.b64).buffer); IDB.put(clip.id, { pcm: i16.buffer }); } } catch (e) { console.warn('vox fetch', e); }
+  }
+  if (i16) { voxBufs.set(clip.id, bufFromI16(i16)); delete voxState[clip.id]; if (!clip.asset) uploadVox(clip); }
+  else voxState[clip.id] = 'missing';
+  if (panelTab === 'vox') renderPanel();
+}
+function loadAllVox() { for (const c of idea.vox) loadVox(c); }
+
+async function addVox(arrayBuffer, name) {
+  const dec = await decodeAudio(arrayBuffer);
+  const dur = Math.min(VOX_MAX, dec.duration);
+  if (dec.duration > VOX_MAX) toast(`Aufnahme auf ${VOX_MAX} Sekunden gekürzt`);
+  // auf Mono und einheitliche Abtastrate bringen
+  const oc = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, Math.max(1, Math.ceil(dur * VOX_SR)), VOX_SR);
+  const src = oc.createBufferSource(); src.buffer = dec; src.connect(oc.destination); src.start(0);
+  const buf = await oc.startRendering(), d = buf.getChannelData(0);
+  let pk = 0; for (let i = 0; i < d.length; i++) { const a = Math.abs(d[i]); if (a > pk) pk = a; }
+  if (pk < 0.002) throw new Error('Die Aufnahme ist still');
+  const gain = 0.9 / pk; for (let i = 0; i < d.length; i++) d[i] *= gain;
+  // Stille vorn und hinten wegschneiden (nur als Vorschlag, die Regler bleiben frei)
+  let a = 0, b = d.length - 1; while (a < b && Math.abs(d[a]) < 0.04) a++; while (b > a && Math.abs(d[b]) < 0.04) b--;
+  const clip = { id: uid(), name: String(name || 'Vocal').replace(/\.[a-z0-9]+$/i, '').slice(0, 30), dur: buf.duration, asset: null, fx: defaultVoxFx(buf.duration) };
+  clip.fx.start = Math.max(0, +(a / VOX_SR - 0.03).toFixed(2)); clip.fx.end = Math.min(buf.duration, +(b / VOX_SR + 0.1).toFixed(2));
+  voxBufs.set(clip.id, buf);
+  idea.vox.push(clip);
+  IDB.put(clip.id, { pcm: i16FromBuf(buf).buffer });
+  markDirty(); uploadVox(clip);
+  return clip;
+}
+function removeVox(clip) {
+  idea.vox = idea.vox.filter(c => c.id !== clip.id);
+  for (const sec of idea.song) if (sec.vox && sec.vox.clip === clip.id) sec.vox = { clip: '', bar: 0, every: 0 };
+  // Kopien der Idee können denselben Clip nutzen: Audiodaten nur löschen, wenn ihn sonst niemand braucht
+  const shared = Store.list.some(x => x.id !== idea.id && typeof x.json === 'string' && x.json.includes(clip.id));
+  if (!shared) { IDB.del(clip.id); if (Assets && clip.asset) Assets.delete(clip.asset).catch(() => {}); }
+  voxBufs.delete(clip.id); markDirty();
+}
+function auditionVox(clip) {
+  const buf = voxBufs.get(clip.id); if (!buf) return;
+  if (play.on) stopPlay();
+  ensureAudio(); eng.update(); eng.panic();
+  eng.vox(actx.currentTime + 0.04, buf, clip.fx, stepDur());
+}
+function drawWave(cv, clip) {
+  const buf = voxBufs.get(clip.id); if (!buf) return;
+  const w = cv.width = Math.max(200, Math.round(cv.clientWidth * 2)), h = cv.height = Math.round(cv.clientHeight * 2), c = cv.getContext('2d');
+  const css = getComputedStyle(document.documentElement), d = buf.getChannelData(0), n = d.length, bars = Math.floor(w / 4);
+  const x0 = clip.fx.start / buf.duration, x1 = clip.fx.end / buf.duration;
+  const colIn = css.getPropertyValue('--uv').trim(), colOut = css.getPropertyValue('--line').trim();
+  c.clearRect(0, 0, w, h);
+  for (let i = 0; i < bars; i++) {
+    const a = Math.floor(i / bars * n), b = Math.floor((i + 1) / bars * n); let pk = 0;
+    for (let k = a; k < b; k += 16) { const v = Math.abs(d[k]); if (v > pk) pk = v; }
+    const f = i / bars;
+    c.fillStyle = f >= x0 && f <= x1 ? colIn : colOut;
+    const bh = Math.max(2, pk * h * 0.95); c.fillRect(i * 4, (h - bh) / 2, 3, bh);
+  }
+}
+const VOX_PRESETS = [
+  ['Roh',        { pitch: 0,  drive: 0,    lo: 80,  hi: 12000, chop: false }],
+  ['Megafon',    { pitch: 0,  drive: 0.75, lo: 500, hi: 3500,  chop: false }],
+  ['Dämon',      { pitch: -5, drive: 0.6,  lo: 80,  hi: 6000,  chop: false }],
+  ['Funkspruch', { pitch: 0,  drive: 0.9,  lo: 800, hi: 2600,  chop: false }],
+  ['Helium',     { pitch: 7,  drive: 0.35, lo: 200, hi: 10000, chop: false }],
+  ['Zerhackt',   { pitch: 0,  drive: 0.55, lo: 150, hi: 8000,  chop: true }]
+];
+
+// Aufnahme über das Mikrofon. Geht nur, wo der Browser es erlaubt (lokal am Rechner), nicht in der claude.ai-Seite.
+let rec = null;
+const inViewer = () => !!(window.claude && typeof window.claude.use === 'function');
+const canRecord = () => !inViewer() && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+async function recToggle() {
+  if (rec) { try { rec.mr.stop(); } catch (e) {} return; }
+  const along = !!($('#recAlong') && $('#recAlong').checked);
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }); }
+  catch (e) { toast('Kein Zugriff aufs Mikrofon. Erlaube ihn im Browser oder nutze „Aufnahme laden“.'); return; }
+  const mr = new MediaRecorder(stream), chunks = [];
+  mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  mr.onstop = async () => {
+    stream.getTracks().forEach(t => t.stop());
+    const was = rec; rec = null; clearTimeout(was.timer);
+    if (play.on) stopPlay();
+    try {
+      const clip = await addVox(await new Blob(chunks).arrayBuffer(), 'Aufnahme ' + (idea.vox.length + 1));
+      if (was.along && idea.song[was.sec]) { idea.song[was.sec].vox = { clip: clip.id, bar: 0, every: 0 }; markDirty(); toast(`Aufnahme liegt jetzt im Abschnitt „${idea.song[was.sec].name}“`); }
+      else toast('Aufnahme gespeichert');
+    } catch (e) { toast('Aufnahme konnte nicht gelesen werden: ' + (e.message || e)); }
+    renderPanel();
+  };
+  rec = { mr, along, sec: selSec, timer: setTimeout(() => { try { mr.stop(); } catch (e) {} }, VOX_MAX * 1000) };
+  mr.start();
+  if (along) { if (play.on) stopPlay(); setMode('song'); startPlay(); }
+  renderPanel();
+}
+
+function renderVox(pb) {
+  const M = idea.mix, canRec = canRecord();
+  pb.append(hint('Sing oder sprich etwas ein, verzerre es und leg es im Song-Bereich in einen Abschnitt, zum Beispiel in den Break. Ein Clip darf bis zu ' + VOX_MAX + ' Sekunden lang sein.'));
+  if (!canRec) pb.append(el('ol', { class: 'howto' },
+    el('li', { text: 'Nimm dich in der App „Sprachmemos“ auf.' }),
+    el('li', { text: 'Tippe dort auf die drei Punkte, dann auf „In Dateien sichern“.' }),
+    el('li', { text: 'Tippe hier auf „Aufnahme laden“ und wähle die Datei aus.' })));
+  const file = el('input', { type: 'file', class: 'vh', id: 'voxFile', accept: 'audio/*,video/mp4,video/quicktime,.m4a,.mp3,.wav,.aac,.caf,.ogg,.webm', 'aria-label': 'Aufnahme laden',
+    onchange: async e => {
+      const f = e.target.files && e.target.files[0]; if (!f) return;
+      toast('Lese Aufnahme …');
+      try { await addVox(await f.arrayBuffer(), f.name); toast('Vocal geladen'); }
+      catch (err) { toast('Diese Datei lässt sich nicht lesen: ' + (err && err.message ? err.message : 'unbekanntes Format')); }
+      renderPanel();
+    } });
+  const actions = el('div', { class: 'srow' }, el('label', { class: 'btn primary filebtn' }, file, el('span', { text: 'Aufnahme laden' })));
+  if (canRec) actions.append(
+    el('button', { class: 'btn rec' + (rec ? ' on' : ''), text: rec ? 'Stopp' : 'Aufnehmen', onclick: recToggle }),
+    el('label', { class: 'check' }, el('input', { type: 'checkbox', id: 'recAlong', checked: !!(rec && rec.along) }), el('span', { text: 'Gewählten Song-Abschnitt dabei abspielen (Kopfhörer aufsetzen)' })));
+  pb.append(actions);
+  if (!idea.vox.length) pb.append(el('p', { class: 'empty-note', text: 'Noch keine Vocals. Deine Clips erscheinen hier mit Wellenform und Effekten.' }));
+  const list = el('div', { class: 'voxlist' });
+  for (const clip of idea.vox) {
+    const fx = clip.fx, ready = voxBufs.has(clip.id), st = voxState[clip.id];
+    const cv = el('canvas', { class: 'wave', 'aria-hidden': 'true' });
+    const redraw = () => drawWave(cv, clip);
+    const used = idea.song.filter(x => x.vox && x.vox.clip === clip.id).map(x => x.name);
+    const card = el('div', { class: 'vox' },
+      el('div', { class: 'voxhead' },
+        el('input', { type: 'text', maxlength: 30, value: clip.name, 'aria-label': 'Name des Clips', oninput: e => { clip.name = e.target.value || 'Vocal'; markDirty(); } }),
+        el('button', { class: 'btn', text: 'Anhören', disabled: !ready, onclick: () => auditionVox(clip) }),
+        el('button', { class: 'btn', text: 'Stopp', disabled: !ready, onclick: () => eng && eng.panic() }),
+        (() => { let arm = 0; const b = el('button', { class: 'btn', text: 'Löschen', onclick: () => {
+          if (!arm) { b.textContent = 'Wirklich löschen?'; b.classList.add('warn'); arm = setTimeout(() => { arm = 0; b.textContent = 'Löschen'; b.classList.remove('warn'); }, 3000); return; }
+          clearTimeout(arm); removeVox(clip); renderPanel(); } }); return b; })()),
+      el('div', { class: 'voxmeta', text: (ready ? `${clip.dur.toFixed(1)} s` : st === 'missing' ? 'Audio fehlt auf diesem Gerät' : 'lädt …')
+        + (ready ? (clip.asset ? ' · in claude.ai gespeichert' : ' · nur auf diesem Gerät') : '')
+        + (used.length ? ' · im Song: ' + used.join(', ') : ' · noch in keinem Abschnitt') }));
+    if (ready) {
+      const after = () => redraw();
+      card.append(cv,
+        el('div', { class: 'srow' }, el('span', { class: 'lbl', text: 'Voreinstellungen' }),
+          ...VOX_PRESETS.map(([name, v]) => el('button', { class: 'chip', text: name, onclick: () => { Object.assign(fx, v); markDirty(); renderPanel(); auditionVox(clip); } }))),
+        el('div', { class: 'params' },
+          slider('Anfang', fx, 'start', 0, +clip.dur.toFixed(2), 0.01, 's', after),
+          slider('Ende', fx, 'end', 0, +clip.dur.toFixed(2), 0.01, 's', after),
+          slider('Tonhöhe (ändert auch das Tempo)', fx, 'pitch', -12, 12, 1, 'HT'),
+          slider('Verzerrung', fx, 'drive', 0, 1, 0.01, '%'),
+          slider('Tiefen weg', fx, 'lo', 40, 1500, 10, 'Hz'),
+          slider('Höhen weg', fx, 'hi', 800, 14000, 50, 'Hz'),
+          slider('Lautstärke', fx, 'vol', 0, 1.5, 0.01, '%')),
+        el('div', {}, checkP('Zerhacker im 16tel-Takt', fx, 'chop')));
+      card.querySelectorAll('input[type=range]').forEach(r => r.addEventListener('input', redraw));
+      requestAnimationFrame(redraw);
+    }
+    list.append(card);
+  }
+  pb.append(list,
+    el('div', { class: 'group' }, el('h3', { class: 'h', text: 'Vocal-Kanal' }),
+      el('div', { class: 'params' },
+        slider('Lautstärke', M.vox, 'vol', 0, 1, 0.01, '%'),
+        slider('Hall', M.vox, 'verb', 0, 1, 0.01, '%'),
+        slider('Delay (punktierte 1/8)', M.vox, 'delay', 0, 1, 0.01, '%'))));
 }
 
 /* ---------- Song-Editor ---------- */
@@ -1537,7 +1809,7 @@ function renderSong(pb) {
         el('span', { class: 'sname', text: sec.name }),
         el('span', { class: 'sseq mono', text: sec.seq }),
         el('span', { class: 'sbars mono', text: sec.bars + ' T' }),
-        el('span', { class: 'sdots', 'aria-hidden': 'true' }, ...TRACKS.filter(t => t.type !== 'bus').map(t => el('i', { class: sec.off[t.id] ? '' : 'on' })))));
+        el('span', { class: 'sdots', 'aria-hidden': 'true' }, ...TRACKS.filter(t => t.type !== 'bus').map(t => el('i', { class: sec.off[t.id] ? '' : 'on' })), el('i', { class: 'vx' + (sec.vox && sec.vox.clip ? ' on' : '') }))));
     if (open) card.append(sectionEditor(sec, i, re));
     list.append(card);
     startBar += sec.bars;
@@ -1547,6 +1819,27 @@ function renderSong(pb) {
       onclick: () => { idea.song.splice(selSec + 1, 0, clone(idea.song[selSec])); selSec++; idea.song[selSec].name = 'Neuer Teil'; re(); } })));
   renderExport(pb);
   markSongPos();
+}
+function voxRow(sec, re) {
+  if (!sec.vox) sec.vox = { clip: '', bar: 0, every: 0 };
+  const vx = sec.vox;
+  const row = el('div', { class: 'srow' }, el('label', { class: 'lbl', for: 'secVox', text: 'Vocal in diesem Abschnitt' }));
+  if (!idea.vox.length) { row.append(el('span', { class: 'empty-note', text: 'Noch keine Vocals. Lade welche unter Klang, Reiter „Vocals“.' })); return row; }
+  const sel = el('select', { id: 'secVox', class: 'select', onchange: e => { vx.clip = e.target.value; if (vx.bar >= sec.bars) vx.bar = 0; re(); } },
+    el('option', { value: '', text: 'Kein Vocal' }), ...idea.vox.map(c => el('option', { value: c.id, text: c.name })));
+  sel.value = vx.clip;
+  row.append(sel);
+  if (vx.clip) {
+    const ev = el('select', { class: 'select', 'aria-label': 'Wiederholung', onchange: e => { vx.every = +e.target.value; re(); } },
+      ...[[0, 'einmal'], [1, 'jeden Takt'], [2, 'alle 2 Takte'], [4, 'alle 4 Takte'], [8, 'alle 8 Takte']].map(([v, t]) => el('option', { value: v, text: t })));
+    ev.value = String(vx.every);
+    row.append(
+      el('button', { class: 'btn stepb', 'aria-label': 'Früher', text: '−', disabled: vx.bar <= 0, onclick: () => { vx.bar--; re(); } }),
+      el('span', { class: 'barsval', text: 'ab Takt ' + (vx.bar + 1) }),
+      el('button', { class: 'btn stepb', 'aria-label': 'Später', text: '+', disabled: vx.bar >= sec.bars - 1, onclick: () => { vx.bar++; re(); } }),
+      ev);
+  }
+  return row;
 }
 function sectionEditor(sec, i, re) {
   const bi = () => { let k = 0; BAR_STEPS.forEach((v, j) => { if (v <= sec.bars) k = j; }); return k; };
@@ -1569,6 +1862,7 @@ function sectionEditor(sec, i, re) {
     el('div', { class: 'srow' }, el('span', { class: 'lbl', text: 'Übergänge' }),
       flag('crash', 'Crash am Anfang'), flag('sweep', 'Filter öffnet sich'), flag('riser', 'Riser zum Ende'),
       flag('roll', 'Clap-Roll im letzten Takt'), flag('gap', 'Kick-Pause im letzten Takt')),
+    voxRow(sec, re),
     el('div', { class: 'srow' },
       el('button', { class: 'btn', text: '↑', 'aria-label': 'Nach oben', disabled: i === 0, onclick: () => move(-1) }),
       el('button', { class: 'btn', text: '↓', 'aria-label': 'Nach unten', disabled: i === idea.song.length - 1, onclick: () => move(1) }),
@@ -1614,6 +1908,7 @@ function renderExport(pb) {
 
 function hasContent(id, entries) {
   if (id === 'fx') return entries.some(e => e.sec && ((e.first && e.sec.crash) || e.riserStart));
+  if (id === 'vox') return entries.some(e => e.vox && voxBufs.has(e.vox));
   if (id === 'rumble') return idea.sound.rumble.send > 0.01 && hasContent('kick', entries);
   if (id === 'clap' && entries.some(e => e.sec && e.sec.roll && e.last)) return true;
   return entries.some(e => !(e.sec && e.sec.off[id]) && idea.patterns[e.pat][id].some(v => v));
@@ -1788,6 +2083,10 @@ async function doExport() {
         if (m[k].length) files.push({ name: `${base}/MIDI/${name}.mid`, data: midiFile(name, m[k], idea.bpm) });
     }
     const enc = new TextEncoder();
+    if (!loop) for (const c of idea.vox) {
+      const buf = voxBufs.get(c.id);
+      if (buf) files.push({ name: `${base}/Vocals/${safe(c.name)} (roh).wav`, data: encodeWav({ sr: VOX_SR, ch: [buf.getChannelData(0)] }) });
+    }
     files.push({ name: `${base}/idee.json`, data: enc.encode(JSON.stringify(idea, null, 2)) });
     let bar = 1;
     const plan = loop ? [] : ['', 'Arrangement (Takt: Abschnitt, Patterns, Länge):',
@@ -1919,5 +2218,7 @@ Store.initLocal();
   else loadIdea(generateBounce(7, true), { draft: true });
 })();
 Store.initCloud();
+// Cloud-Ablage für Vocals: sobald sie da ist, noch nicht hochgeladene Clips nachreichen
+if (inViewer()) window.claude.use('assets').then(a => { Assets = a || null; if (Assets && idea) for (const c of idea.vox) uploadVox(c); }).catch(() => {});
 })();
 </script>
